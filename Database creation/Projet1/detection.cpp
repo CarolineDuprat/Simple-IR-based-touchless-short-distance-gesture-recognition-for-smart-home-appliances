@@ -44,3 +44,22 @@ bool objectReceiverContains (double sizeLength, double sizeWidth,int angle, doub
 
     return rectanglePointContains (sizeLength,sizeWidth, xProj, yProj);
 }
+/**
+ * @brief positionMoveObject calculate the new position of the object after a "time" at a speed objectMovingSpeed
+ * @param positionInitObject initial position of the object
+ * @param objectMovingSpeed speed of the object
+ * @param angle Angular position of the obstacle
+ * @param time the time since the launch of the simulation
+ * @return the current position of the object
+ */
+vector<double> positionMoveObject (double positionInitObject[],double objectMovingSpeed,int angle,unsigned int time)
+{
+    vector<double> result(2);
+    double angleRad;
+    double distance = time * objectMovingSpeed/10  ;
+    angleRad = angle * PI / 180;
+    result[0] = positionInitObject[0] - distance*cos(angleRad);
+    result[1] = positionInitObject[1] - distance*sin(angleRad);
+
+    return result;
+}
