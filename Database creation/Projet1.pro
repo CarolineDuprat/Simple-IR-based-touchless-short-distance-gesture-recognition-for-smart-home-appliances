@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         detection.cpp \
+        fileManagement.cpp \
         main.cpp \
         time.cpp
 
@@ -26,4 +27,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     detection.h \
+    fileManagement.h \
     time.h

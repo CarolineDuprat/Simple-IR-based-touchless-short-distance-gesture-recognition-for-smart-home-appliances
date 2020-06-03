@@ -24,10 +24,10 @@ bool rectanglePointContains (double sizeLength, double sizeWidth, double pointX,
 
 /**
  * @brief objectReceiverContains allows to know if the object is in front of the receiver
- * @param sizeLength rectangle width
- * @param sizeWidth rectangle length
+ * @param sizeLength rectangle length
+ * @param sizeWidth rectangle width
  * @param angle Angular position of the obstacle
- * @param positionObject position (x,y) object
+ * @param positionObject position (x,y) object , it's the position of the top front left
  * @param positionReceiver position (x,y) receiver
  * @return true if the object is in front of the receiver, if not return false
  */
