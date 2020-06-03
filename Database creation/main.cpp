@@ -41,8 +41,24 @@ int main()
   double object2[nombre];
   object2[0] = 5;
   object2[1] = 1;
-  string nameF;
-  nameF=nameFile ("C:/Users/Caroline Duprat/Desktop/",object,nombre2,30,5.6,3.2,object2,20,2);
+  double data[5][3];
+  data[0][0] = 110;
+  data[0][1] = 10;
+  data[0][2] = 0;
+  data[1][0] = 1.5;
+  data[1][1] = 1;
+  data[1][2] = 0;
+  data[2][0] = 2;
+  data[2][1] = 3;
+  data[2][2] = 0;
+  data[3][0] = 5;
+  data[3][1] = 5;
+  data[3][2] = 0;
+  data[4][0] = -5;
+  data[4][1] = -4;
+  data[4][2] = 0;
+  bool nameF;
+  nameF=writeFile  ("C:/Users/Caroline Duprat/Desktop/",object,nombre2,30,5.6,3.2,object2,20,2,data,5);
   cout << nameF<< endl;
   return 0;
 }

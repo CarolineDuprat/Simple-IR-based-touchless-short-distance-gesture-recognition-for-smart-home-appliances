@@ -51,24 +51,41 @@ string nameFile (string lien,double receiver[][2],int nbrReceiver,int angle,doub
 
 }
 
-
-
-
-
-
-    /*
-    ofstream monFlux2(lien.c_str());
-    if(monFlux2)
+/**
+ * @brief writeFile write data in a file
+ * @param lien file location
+ * @param receiver position Receiver
+ * @param nbrReceiver number of Receiver
+ * @param angle Angular position of the obstacle
+ * @param sizeLength rectangle length
+ * @param sizeWidth rectangle width
+ * @param positionObject position (x,y) object , it's the position of the top front left
+ * @param objectMovingSpeed speed of the object
+ * @param time
+ * @param data ID, time, valid
+ * @param nbrID number of ID
+ * @return true: the line has been added to the file
+ */
+bool writeFile (string lien,double receiver[][2],int nbrReceiver,int angle,double sizeLength, double sizeWidth, double positionObject[],double objectMovingSpeed,unsigned int time,double data [][3],int nbrID)
+{
+    string nomFichier;
+    bool retour;
+    nomFichier = nameFile (lien,receiver,nbrReceiver,angle,sizeLength, sizeWidth, positionObject,objectMovingSpeed,time);
+    ofstream monFlux(nomFichier.c_str(),ios::app);
+    if(monFlux)
     {
-        monFlux2 << "Bonjour, je suis une phrase écrite dans un fichier." << endl;
-        monFlux2 << 42.1337 << endl;
-        int age(23);
-        monFlux2 << "J'ai " << age << " ans." << endl;
+        for (int compteur(0) ; compteur < nbrID ; compteur++){
+            monFlux << data [compteur][0] << " "<< data [compteur][1] << " "<< data [compteur][2] << " ";
+        }
+        monFlux << endl;
+        retour=true;
     }
     else
     {
-        cout << "ERREUR: Impossible d'ouvrir le fichier." << endl;
+        retour=false;
     }
+    return retour;
+}
 
-    */
+
 
