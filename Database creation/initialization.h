@@ -11,5 +11,7 @@ using namespace std;
 std::vector <double> init(int& nbrReceiver,int& direction,double& sizeLength,double& sizeWidth,double& objectMovingSpeed,double distance);
 std::vector <double> linearRelation (int direction);
 double distanceMaxReceiverLinearRelation (int direction,std::vector <double> positionReveicer,int nbrReceiver);
+bool convertVectorToTab (std::vector <double> positionReceiver,double tabPositionReceiver[][2],int nbrReceiver);
+
 #endif // INITIALIZATION_H
 

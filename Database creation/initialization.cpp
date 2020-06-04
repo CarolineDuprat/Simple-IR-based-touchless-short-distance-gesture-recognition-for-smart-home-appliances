@@ -101,14 +101,14 @@ vector <double> linearRelation (int direction)
 /**
  * @brief distanceMaxReceiverLinearRelation Calculution of the maximum distance between the line and receivers
  * @param direction Angular position of the obstacle
- * @param positionReveicer all positions of receiver
+ * @param positionReceiver all positions of receiver
  * @param nbrReceiver number of Receiver
  * @return maximum distance between the line and receivers, if distanceMax=0 => Parameter error
  */
-double distanceMaxReceiverLinearRelation (int direction,vector <double> positionReveicer,int nbrReceiver){
+double distanceMaxReceiverLinearRelation (int direction,vector <double> positionReceiver,int nbrReceiver){
     double distanceMax(0),distance;
     int i(0);
-    if ((direction<0)||(direction>359)||(nbrReceiver<1)||(positionReveicer.size()!=(nbrReceiver*2))){
+    if ((direction<0)||(direction>359)||(nbrReceiver<1)||((int)positionReceiver.size()!=(nbrReceiver*2))){
         distanceMax=0;
     }else{
         vector <double> coefficient = linearRelation (direction);
@@ -116,7 +116,7 @@ double distanceMaxReceiverLinearRelation (int direction,vector <double> position
             distanceMax=0;
         }else{
             for (int compteur(0) ; compteur < nbrReceiver ; compteur++){
-                distance = fabs(((coefficient[0]*positionReveicer[i])+(coefficient[1]*positionReveicer[(i+1)]))/sqrt(pow(coefficient[0],2)+pow(coefficient[1],2)));
+                distance = fabs(((coefficient[0]*positionReceiver[i])+(coefficient[1]*positionReceiver[(i+1)]))/sqrt(pow(coefficient[0],2)+pow(coefficient[1],2)));
                 if (distance > distanceMax){
                     distanceMax=distance;
                 }
@@ -125,4 +125,24 @@ double distanceMaxReceiverLinearRelation (int direction,vector <double> position
         }
     }
     return distanceMax;
+}
+/**
+ * @brief convertVectorToTab convert vector to tab
+ * @param positionReceiver all positions of receiver
+ * @param tabPositionReceiver tab empty
+ * @param nbrReceiver number of Receiver
+ * @return true if tab has been completed, false => error
+ */
+bool convertVectorToTab (vector <double> positionReceiver,double tabPositionReceiver[][2],int nbrReceiver){
+    bool retour=false;
+    int i(0);
+    if ((nbrReceiver>0)&&((int)positionReceiver.size()==(nbrReceiver*2))){
+        for (int compteur(0) ; compteur < nbrReceiver ; compteur++){
+            tabPositionReceiver[compteur][0]=positionReceiver[i];
+            tabPositionReceiver[compteur][1]=positionReceiver[i+1];
+            i=i+2;
+        }
+        retour=true;
+    }
+    return retour;
 }
