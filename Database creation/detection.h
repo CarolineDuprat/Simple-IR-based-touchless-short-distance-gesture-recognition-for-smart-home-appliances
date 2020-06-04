@@ -8,8 +8,8 @@
 using namespace std;
 
 
-bool rectanglePointContains (double sizeLength, double sizeWidth, double pointX, double pointY);
-bool objectReceiverContains (double sizeLength, double sizeWidth,int angle, double positionObject[],double positionReceiver[]);
+int rectanglePointContains (double sizeLength, double sizeWidth, double pointX, double pointY);
+int objectReceiverContains (double sizeLength, double sizeWidth,int angle, double positionObject[],double positionReceiver[]);
 std::vector<double> positionMoveObject (double positionInitObject[],double objectMovingSpeed,int angle,unsigned int time);
 
 

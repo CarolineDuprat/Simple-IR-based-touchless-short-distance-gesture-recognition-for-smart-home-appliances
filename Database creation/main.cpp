@@ -11,12 +11,10 @@ using namespace std;
 int main()
 {
     int nbrReceiver, direction;
-    double sizeLength,sizeWidth,objectMovingSpeed,positionObject[2];
+    double sizeLength,sizeWidth,objectMovingSpeed,distance;
     vector <double> data;
-    data=init(nbrReceiver,direction,sizeLength,sizeWidth,objectMovingSpeed,positionObject);
-    double receiver[nbrReceiver][2];
+    data=init(nbrReceiver,direction,sizeLength,sizeWidth,objectMovingSpeed,distance);
 
-    cout << nbrReceiver;
   return 0;
 }
 
