@@ -32,18 +32,19 @@ int rectanglePointContains (double sizeLength, double sizeWidth, double pointX, 
  * @param sizeWidth rectangle width
  * @param angle Angular position of the obstacle
  * @param positionObject position (x,y) object , it's the position of the top front left
- * @param positionReceiver position (x,y) receiver
+ * @param positionReceiverX position x receiver
+ * @param positionReceiverY position y receiver
  * @return 1 if the object is in front of the receiver, 0 if the object is not in front of the receiver, -1 error parameter
  */
-int objectReceiverContains (double sizeLength, double sizeWidth,int angle, double positionObject[],double positionReceiver[])
+int objectReceiverContains (double sizeLength, double sizeWidth,int angle, vector <double> positionObject,double positionReceiverX,double positionReceiverY)
 {
     double dx,dy,rotRad,xProj,yProj;
     int retour;
     if ((sizeLength<=0)||(sizeWidth<=0)||(angle<0)||(angle>359)){
         retour=-1;
     }else{
-        dx = positionReceiver[0] - positionObject [0];
-        dy = positionReceiver[1] - positionObject [1];
+        dx = positionReceiverX - positionObject [0];
+        dy = positionReceiverY - positionObject [1];
 
         rotRad = angle * PI / 180;
         xProj = cos(rotRad)*dx + sin(rotRad)*dy;
@@ -60,7 +61,7 @@ int objectReceiverContains (double sizeLength, double sizeWidth,int angle, doubl
  * @param time the time since the launch of the simulation
  * @return the current position of the object, if result[2] == 0 => erreur
  */
-vector<double> positionMoveObject (double positionInitObject[],double objectMovingSpeed,int angle,unsigned int time)
+vector<double> positionMoveObject (vector <double> positionInitObject,double objectMovingSpeed,int angle,unsigned int time)
 {
     vector<double> result(3);
     double angleRad;
@@ -75,3 +76,4 @@ vector<double> positionMoveObject (double positionInitObject[],double objectMovi
     }
     return result;
 }
+

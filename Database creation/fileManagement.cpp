@@ -13,7 +13,7 @@
  * @param time ?
  * @return file name, if filename="file" => Error
  */
-string nameFile (string lien,double receiver[][2],int nbrReceiver,int angle,double sizeLength, double sizeWidth, double positionObject[],double objectMovingSpeed,unsigned int time)
+string nameFile (string lien,double receiver[][2],int nbrReceiver,int angle,double sizeLength, double sizeWidth, vector <double> positionObject,double objectMovingSpeed,unsigned int time)
 {
     string nomFichier("file");
     double distance;
@@ -69,7 +69,7 @@ string nameFile (string lien,double receiver[][2],int nbrReceiver,int angle,doub
  * @param nbrID number of ID
  * @return true: the line has been added to the file
  */
-bool writeFile (string lien,double receiver[][2],int nbrReceiver,int angle,double sizeLength, double sizeWidth, double positionObject[],double objectMovingSpeed,unsigned int time,double data [][3],int nbrID)
+bool writeFile (string lien,double receiver[][2],int nbrReceiver,int angle,double sizeLength, double sizeWidth, vector <double> positionObject,double objectMovingSpeed,unsigned int time,double data [][3],int nbrID)
 {
     string nomFichier;
     bool retour(false);

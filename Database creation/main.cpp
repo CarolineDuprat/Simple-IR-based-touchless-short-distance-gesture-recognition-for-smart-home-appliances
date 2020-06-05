@@ -10,18 +10,20 @@ using namespace std;
 
 int main()
 {
+    // Initialization
     int nbrReceiver, direction;
     bool retour;
     double sizeLength,sizeWidth,objectMovingSpeed,distance(0);
-    vector <double> data;
-    /*
+    vector <double> data,positionObject;
     data=init(nbrReceiver,direction,sizeLength,sizeWidth,objectMovingSpeed,distance);
-    double tabPositionReceiver[nbrReceiver][2];
-    retour=convertVectorToTab (data,tabPositionReceiver,nbrReceiver);
-    cout << tabPositionReceiver[0][0] << "   "<<tabPositionReceiver[1][0];
-    */
-    data=convertDistancetoPoint (300,3,2);
-    cout << data[0] << "      " << data[1] << "      ";
+    double positionReceiver[nbrReceiver][2];
+    retour=convertVectorToTab (data,positionReceiver,nbrReceiver);
+    if (retour==false){
+        cout<<"Error"<<endl;
+    }
+    positionObject= convertDistancetoPoint (direction,distance,sizeWidth);
+    // End Initialization
+
   return 0;
 }
 
