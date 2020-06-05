@@ -10,7 +10,7 @@
  * @param distance distance object
  * @return all positions of receiver, if the return is empty => error
  */
-vector <double> init(int& nbrReceiver,int& direction,double& sizeLength,double& sizeWidth,double& objectMovingSpeed,double distance)
+vector <double> init(int& nbrReceiver,int& direction,double& sizeLength,double& sizeWidth,double& objectMovingSpeed,double& distance)
 {
     vector <double> positionReveiver;
     double x,y,sizeWidthMin;
@@ -145,4 +145,108 @@ bool convertVectorToTab (vector <double> positionReceiver,double tabPositionRece
         retour=true;
     }
     return retour;
+}
+/**
+ * @brief equation2nddegre Solution of the equation ay*y + by + c = 0
+ * @param coef coef[0]=a , coef[1]=b , coef[2]=c
+ * @return Number of solution + solutions
+ */
+vector <double> equation2nddegre (double coef [3]){
+    vector <double> result (3);
+    double delta = pow(coef[1],2)-4*coef[0]*coef[2];
+    if (delta == 0){
+        result[0]=1;
+        result[1]=(-coef[1])/(2*coef[0]);
+    }else{
+        result[0]=2;
+        result[1]=(-coef[1]+sqrt(delta))/(2*coef[0]);
+        result[2]=(-coef[1]-sqrt(delta))/(2*coef[0]);
+    }
+    return result;
+}
+/**
+ * @brief convertDistancetoPoint convert Object Distance to the position of the top front left
+ * @param direction Angular position of the obstacle
+ * @param distance distance object
+ * @param width rectangle width
+ * @return the position of this point, if point=(0,0) => error
+ */
+vector <double> convertDistancetoPoint (int direction,double distance,double width){
+    vector <double> point (2);
+    vector <double> resultEq;
+    double coef [3];
+    double intersectionPoint[2];
+    double testX[2];
+    if ((direction<360)&&(distance>0)&&(width>0)){
+        vector <double> coefDroite = linearRelation (direction);
+        if ((coefDroite[0]==0)&&(coefDroite[1]==0)){
+            point[0]=0;
+            point[1]=0;
+        }else {
+            intersectionPoint[1]=distance*sin(direction * PI / 180);
+            intersectionPoint[0]=distance*cos(direction * PI / 180);
+            if (direction==0){
+                point[0]=distance;
+                point[1]=-width/2;
+            }else if(direction==90){
+                point[0]=width/2;
+                point[1]=distance;
+            }else if(direction==180){
+                point[0]=-distance;
+                point[1]=width/2;
+            }else if(direction==270){
+                point[0]=-width/2;
+                point[1]=-distance;
+            }else{
+                coef[0]=1;
+                coef[1]=-2*intersectionPoint[1];
+                coef[2]=pow(intersectionPoint[1],2)-(pow((width/2),2)/(pow(coefDroite[0],2)+1));
+                resultEq=equation2nddegre(coef);
+                if (resultEq[0]==1){
+                    point[1]=resultEq[1];
+                    point[0]=coefDroite[0]*(resultEq[1]-intersectionPoint[1]+(intersectionPoint[0])/coefDroite[0]);
+                }else{
+                    testX[0]=coefDroite[0]*(resultEq[1]-intersectionPoint[1]+(intersectionPoint[0])/coefDroite[0]);
+                    testX[1]=coefDroite[0]*(resultEq[2]-intersectionPoint[1]+(intersectionPoint[0])/coefDroite[0]);
+                    if ((direction>0)&&(direction<90)){
+                        if((intersectionPoint[0]<testX[0])&&(intersectionPoint[1]>=resultEq[1])){
+                            point[1]=resultEq[1];
+                            point[0]=testX[0];
+                        }else{
+                            point[1]=resultEq[2];
+                            point[0]=testX[1];
+                        }
+                    }else if((direction>90)&&(direction<180)){
+                        if((intersectionPoint[0]<=testX[0])&&(intersectionPoint[1]<resultEq[1])){
+                            point[1]=resultEq[1];
+                            point[0]=testX[0];
+                        }else{
+                            point[1]=resultEq[2];
+                            point[0]=testX[1];
+                        }
+                    }else if ((direction>180)&&(direction<270)){
+                        if((intersectionPoint[0]>testX[0])&&(intersectionPoint[1]<=resultEq[1])){
+                            point[1]=resultEq[1];
+                            point[0]=testX[0];
+                        }else{
+                            point[1]=resultEq[2];
+                            point[0]=testX[1];
+                        }
+                    }else{
+                        if((intersectionPoint[0]>=testX[0])&&(intersectionPoint[1]>resultEq[1])){
+                            point[1]=resultEq[1];
+                            point[0]=testX[0];
+                        }else{
+                            point[1]=resultEq[2];
+                            point[0]=testX[1];
+                        }
+                    }
+                }
+            }
+        }
+    }else{
+        point[0]=0;
+        point[1]=0;
+    }
+    return point;
 }
