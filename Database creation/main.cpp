@@ -10,6 +10,8 @@ using namespace std;
 
 int main()
 {
+    int start, stop, lap;     //déclaration d'entier pour récupérer les valeurs renvoyées par GetTickCount()
+    start = GetTickCount();
     // Initialization
     int nbrReceiver, direction;
     bool retour;
@@ -24,6 +26,10 @@ int main()
     positionObject= convertDistancetoPoint (direction,distance,sizeWidth);
     // End Initialization
 
+        //start contient alors la durée écoulé, en millisecondes, depuis que l'ordinateur est allumé
+    lap = GetTickCount() - start;      //utilisation de la variable lap pour un temps intermédiaire
+    stop = GetTickCount() - start;
+    cout<<lap<<endl;
   return 0;
 }
 

@@ -76,4 +76,35 @@ vector<double> positionMoveObject (vector <double> positionInitObject,double obj
     }
     return result;
 }
-
+/**
+ * @brief distanceTraveled Check if the object has traveled the distance
+ * @param positionInitObject initial position of the object
+ * @param objectMovingSpeed speed of the object
+ * @param angle Angular position of the obstacle
+ * @param time the time since the launch of the simulation
+ * @param distance distance object
+ * @param sizeLength rectangle length
+ * @return 1 : distance traveled, 0:distance not traveled, -1 : error
+ */
+int distanceTraveled (vector <double> positionInitObject,double objectMovingSpeed,int angle,unsigned int time ,double distance,double sizeLength)
+{
+    int result;
+    double distanceTraveled;
+    vector<double> position;
+    if ((objectMovingSpeed<=0)||(angle<0)||(angle>359)||(distance<=0)||(sizeLength<=0)){
+        result=-1;
+    }else{
+        position=positionMoveObject (positionInitObject,objectMovingSpeed,angle,time);
+        if (position[2]==0){
+            result=-1;
+        }else{
+            distanceTraveled=sqrt(pow((position[0]-positionInitObject[0]),2)+pow((position[1]-positionInitObject[1]),2));
+            if (distanceTraveled >= (distance*2 + sizeLength)){
+                 result=1;
+            }else{
+                 result=0;
+            }
+        }
+    }
+    return result;
+}
