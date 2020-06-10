@@ -7,7 +7,7 @@
 using namespace std;
 
 // arguments : name.exe NumberOfReceiver x1[cm] y1[cm] x2[cm] y2[cm].... xN[cm] yN[cm] angle[°] distance[cm] speed[m/s] width[cm] length[cm]
-// 2 +1.2 -3.6 -6 -9 +6 +4 +3.1 +17 +6
+// 6 -6 5 -6 -2 0.5 3 -2.5 -2.5 4.5 -0.5 5.5 -4 +150 +10 +10 +11 +3
 
 int main(int argc,char *argv[])
 {
@@ -42,9 +42,14 @@ int main(int argc,char *argv[])
 
         //Check parameters
         check = checkAllParameters (nbrReceiver,positionReceiver,angle,distance,speed,sizeWidth,sizeLength);
+
         if (check==true){
             totalTime=simulationTime (distance,speed);
-            cout << totalTime << endl ;
+            information = HorizontalAndVerticalSpeed (distance,speed,angle);
+            for (int t=0;t< totalTime+1;t++){
+                positionObject=positionMoveObject (information ,t);
+                cout << t << "  "<< positionObject[0] << "   " << positionObject[1]<<endl;
+            }
         }
     }
   return 0;
