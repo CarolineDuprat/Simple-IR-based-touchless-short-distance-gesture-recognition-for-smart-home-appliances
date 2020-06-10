@@ -1,3 +1,7 @@
+/**
+  * @file This file allows to verif all the parameters enter in argument with the command-line
+  */
+
 #include "checkInitialization.h"
 using namespace std;
 

@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         checkInitialization.cpp \
+        fileManagement.cpp \
         main.cpp \
         simulationReceiver.cpp
 
@@ -26,4 +27,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     checkInitialization.h \
+    fileManagement.h \
     simulationReceiver.h
