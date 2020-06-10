@@ -11,9 +11,9 @@ using namespace std;
 
 int main(int argc,char *argv[])
 {
-    int nbrReceiver, angle(0), j(2),totalTime,retourObjectInFrontofReceiver;
+    int nbrReceiver, angle(0), j(2),totalTime;
     double distance,speed,sizeLength,sizeWidth;
-    bool check,writeF;
+    bool check;
     std::vector<double> positionObject,information;
     string filename;
 
@@ -44,27 +44,7 @@ int main(int argc,char *argv[])
         check = checkAllParameters (nbrReceiver,positionReceiver,angle,distance,speed,sizeWidth,sizeLength);
         if (check==true){
             totalTime=simulationTime (distance,speed);
-            information = HorizontalAndVerticalSpeed (distance,speed,angle);
-            double dataReceiver [nbrReceiver][3];
-            // add function to create Id for all the receiver
-            for (int t=0;t< totalTime;t++){
-                positionObject=positionMoveObject (information ,t);
-                for (int r=0;r< nbrReceiver;r++){
-                    retourObjectInFrontofReceiver =objectInFrontofReceiver (positionObject,sizeLength,sizeWidth,angle,positionReceiver[r][0],positionReceiver[r][1]);
-                    if (retourObjectInFrontofReceiver==0){
-                        dataReceiver [r][1]=0;
-                        dataReceiver [r][2]=0;
-                    }else if ((retourObjectInFrontofReceiver==1)&&(dataReceiver [r][2]=0)){
-                        dataReceiver [r][1]=t;
-                        dataReceiver [r][2]=1;
-                    }
-                }
-                writeF = writeFile (filename,dataReceiver,nbrReceiver);
-                if (writeF==false){
-                    cout << "Error" << endl;
-                }
-
-            }
+            cout << totalTime << endl ;
         }
     }
   return 0;
