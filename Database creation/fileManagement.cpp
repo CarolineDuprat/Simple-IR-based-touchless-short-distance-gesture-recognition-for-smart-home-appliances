@@ -29,11 +29,13 @@ bool writeFile (string nameFile,double data [][3],int nbrID)
  * R1 : 00000001, R2 : 00000010, .... R8 : 10000000
  * @param nbrID number of ID
  * @return the iD list
+ *
+ * With doubles: nbrID = 0 => pow(2,0) = 1.0 -> binary != 000001
  */
-std::vector<double> iDDecimal (int nbrID){
-    std::vector<double> iD(nbrID);
+std::vector<unsigned> iDBinaire  (int nbrID){
+    std::vector<unsigned> iD(nbrID);
     for (int i(0);i<nbrID;i++){
-        iD[i]= pow(2,i);
+        iD[i] = 1 << nbrID;
     }
     return iD;
 }
