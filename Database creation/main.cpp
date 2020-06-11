@@ -53,6 +53,24 @@ int main(int argc,char *argv[])
             }
             for (int t=0;t< totalTime+1;t++){
                 positionObject=positionMoveObject (information ,t);
+                for (int r=0;r< nbrReceiver;r++){
+                    // Error with the function objectInFrontofReceiver
+                    retourObjectInFrontofReceiver=objectInFrontofReceiver (positionObject,sizeLength,sizeWidth,angle,positionReceiver[r][0],positionReceiver[r][1]);
+                    if ((retourObjectInFrontofReceiver==1)&&(dataReceiver [r][2]==0)){
+                        dataReceiver [r][1]=t;
+                        dataReceiver [r][2]=1;
+                    }else if(retourObjectInFrontofReceiver==1){
+                        dataReceiver [r][2]=1;
+                    }else{
+                        dataReceiver [r][1]=0;
+                        dataReceiver [r][2]=0;
+                    }
+                }
+                writeF = writeFile (filename,dataReceiver,nbrReceiver);
+                if (writeF==false){
+                    cout << "Error" << endl;
+                }
+
             }
         }
     }
