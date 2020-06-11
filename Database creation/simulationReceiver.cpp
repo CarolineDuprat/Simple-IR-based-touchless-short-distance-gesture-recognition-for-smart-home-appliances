@@ -110,7 +110,6 @@ int objectInFrontofReceiver (std::vector<double> positionObject,double sizeLengt
         //Change the origin of the coordinate system, now the origin is the center of the object
         dx = positionReceiverX - positionObject [0];
         dy = positionReceiverY - positionObject [1];
-
         rotRad = angle * PI / 180;
         // I make a rotation at the point. Now the object is a rectangle aligned with axes
         // Rotation matrix : ( xProj )   =   (  cos (angle)     - sin (angle)   ) ( dx )

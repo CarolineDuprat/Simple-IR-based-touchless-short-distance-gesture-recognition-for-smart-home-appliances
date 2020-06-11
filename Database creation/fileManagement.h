@@ -8,5 +8,6 @@
 #include <vector>
 
 bool writeFile (std::string nameFile,double data [][3],int nbrID);
+std::vector<double> iDDecimal (int nbrID);
 
 #endif // FILEMANAGEMENT_H

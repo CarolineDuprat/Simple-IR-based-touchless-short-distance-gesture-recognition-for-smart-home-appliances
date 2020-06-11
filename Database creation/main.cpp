@@ -11,9 +11,9 @@ using namespace std;
 
 int main(int argc,char *argv[])
 {
-    int nbrReceiver, angle(0), j(2),totalTime;
+    int nbrReceiver, angle(0), j(2),totalTime,retourObjectInFrontofReceiver;
     double distance,speed,sizeLength,sizeWidth;
-    bool check;
+    bool check,writeF;
     std::vector<double> positionObject,information;
     string filename;
 
@@ -46,9 +46,13 @@ int main(int argc,char *argv[])
         if (check==true){
             totalTime=simulationTime (distance,speed);
             information = HorizontalAndVerticalSpeed (distance,speed,angle);
+            double dataReceiver [nbrReceiver][3];
+            std::vector<double> iD=iDDecimal (nbrReceiver);
+            for (int i=0;i< nbrReceiver;i++){
+                dataReceiver [i][0]=iD[i];
+            }
             for (int t=0;t< totalTime+1;t++){
                 positionObject=positionMoveObject (information ,t);
-                cout << t << "  "<< positionObject[0] << "   " << positionObject[1]<<endl;
             }
         }
     }
