@@ -21,6 +21,8 @@ int main(int argc,char *argv[])
     string filename;
     returnSpeedPos infoSpeedPos;
     returnInit retourinit;
+
+    //@FRB
     position_t *positionReceiver = nullptr;
 
     (void)totalTime;
@@ -82,10 +84,8 @@ int main(int argc,char *argv[])
     }else{
         (void )showParameters (nbrReceiver,positionReceiver,angle,sizeLength,sizeWidth,speed,distance);
         totalTime=simulationTime (distance,speed);
-        cout << "Total Time : " << totalTime << " ms"<<endl;
-        infoSpeedPos = HorizontalAndVerticalSpeed (distance,speed,angle);
-        cout << "Initial position of the object, x: "<< infoSpeedPos.pos.x << " cm, y: " << infoSpeedPos.pos.y<<" cm"<<endl;
-        cout << "Speed horirontal : "<< infoSpeedPos.speed.hor<<" cm/ms, Speed vertical : "<<infoSpeedPos.speed.vert << " cm/ms"<<endl;
+        cout << "Total Time : " << totalTime << endl;
+        information = HorizontalAndVerticalSpeed (distance,speed,angle);
     }
 
     /*

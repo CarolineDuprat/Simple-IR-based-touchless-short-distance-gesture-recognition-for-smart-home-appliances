@@ -25,46 +25,39 @@ int simulationTime (double const distance,double const speed){
  * @param distance distance from object center to device center [cm]
  * @param speed speed of the object [m/s]
  * @param angle Angular position of the obstacle [°]
- * @return result[0] : x Intial position [cm], result[1] : y Intial position [cm]
- *         result[2] : HorizontalSpeed [cm/ms], result[3] : VerticalSpeed [cm/ms]
- *         result[4] : 1 No error parameters ; 0 Error
+ * @return retour.pos : position of the object [cm]
+ *         retour.speed : horizontal and vertical speed [cm/ms]
  */
-std::vector<double> HorizontalAndVerticalSpeed (double const distance,double const speed,int const angle){
-    std::vector<double> result(5);
+returnSpeedPos HorizontalAndVerticalSpeed (double const distance,double const speed,int const angle){
     double angleRad;
     int totalTime;
-    //Check parameters
-    if ((speed<=0)||(angle<0)||(angle>359)){
-        result[4]=0;
+    returnSpeedPos retour;
+
+    angleRad = angle * PI / 180;
+
+    //Initial position
+    double xInit = distance*cos(angleRad);
+    retour.pos.x=xInit;
+    double yInit = distance*sin(angleRad);
+    retour.pos.y=yInit;
+
+    //Total speed [ms]
+    totalTime=simulationTime (distance,speed);
+
+    //HorizontalSpeed [cm/ms]
+    if ((-xInit)>xInit){
+        retour.speed.hor=2*fabs(xInit)/totalTime;
     }else{
-        //No error parameters
-        result[4]=1;
-
-        angleRad = angle * PI / 180;
-
-        //Initial position
-        double xInit = distance*cos(angleRad);
-        result[0]=xInit;
-        double yInit = distance*sin(angleRad);
-        result[1]=yInit;
-
-        //Total speed [ms]
-        totalTime=simulationTime (distance,speed);
-
-        //HorizontalSpeed [cm/ms]
-        if ((-xInit)>xInit){
-            result[2]=2*fabs(xInit)/totalTime;
-        }else{
-            result[2]=-(2*fabs(xInit)/totalTime);
-        }
-        //VerticalSpeed [cm/ms]
-        if ((-yInit)>yInit){
-            result[3]=2*fabs(yInit)/totalTime;
-        }else{
-            result[3]=-(2*fabs(yInit)/totalTime);
-        }
+        retour.speed.hor=-(2*fabs(xInit)/totalTime);
     }
-    return result;
+    //VerticalSpeed [cm/ms]
+    if ((-yInit)>yInit){
+        retour.speed.vert=2*fabs(yInit)/totalTime;
+    }else{
+        retour.speed.vert=-(2*fabs(yInit)/totalTime);
+    }
+
+    return retour;
 }
 /**
  * @brief positionMoveObject Calcul the position of the object

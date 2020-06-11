@@ -10,13 +10,13 @@
  * @param speed speed of the object [m/s]
  * @param distance distance from object center to device center [cm]
  * @param positionReceiverVector position of all receivers
- * @return true : No Error ; false : Error Parameters
+ * @return retour.check : true no error, false error
+ *         retour.positionReceiver : return a vector with all positions of receivers [cm]
  */
 returnInit init(int& nbrReceiver,int& direction,double& sizeLength,double& sizeWidth,double& speed,double& distance)
 {
     returnInit retour;
-    bool check(true);
-    std::vector<double> positionReceiverVector;
+    retour.check=true;
     double x,y,sizeWidthMin;
     cout << "Start of initialization " << endl;
     do{
@@ -31,17 +31,17 @@ returnInit init(int& nbrReceiver,int& direction,double& sizeLength,double& sizeW
             cout << " y :" << endl;
             cin >> y;
         }while ((x==0)&&(y==0));
-        positionReceiverVector.push_back(x);
-        positionReceiverVector.push_back(y);
+        retour.positionReceiver.push_back(x);
+        retour.positionReceiver.push_back(y);
     }
     do{
         cout << "Object direction ? [degree]  " << endl;
         cin >> direction;
     }while((direction>359)||(direction<0));
-    sizeWidthMin=(distanceMaxReceiverLinearRelationVector (direction,positionReceiverVector,nbrReceiver)*2);
+    sizeWidthMin=(distanceMaxReceiverLinearRelationVector (direction,retour.positionReceiver,nbrReceiver)*2);
     if (sizeWidthMin==0){
         cout << "Error"<< endl;
-        check=false;
+        retour.check=false;
     }
     else{
         do{
@@ -62,8 +62,7 @@ returnInit init(int& nbrReceiver,int& direction,double& sizeLength,double& sizeW
         }while(distance<=0);
         cout << "End of initialization  " << endl;
     }
-    retour.positionReceiver=positionReceiverVector;
-    retour.check=check;
+
     return retour;
 }
 /**

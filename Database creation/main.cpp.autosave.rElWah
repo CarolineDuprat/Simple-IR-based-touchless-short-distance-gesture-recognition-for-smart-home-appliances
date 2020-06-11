@@ -7,6 +7,16 @@
 using namespace std;
 
 
+typedef struct {
+    double hor;
+    double vert;
+} speed_t;
+
+
+typedef struct {
+    position_t pos;
+    speed_t speed;
+} xx_t;
 
 
 // arguments : name.exe NumberOfReceiver x1[cm] y1[cm] x2[cm] y2[cm].... xN[cm] yN[cm] angle[°] distance[cm] speed[m/s] width[cm] length[cm]
@@ -19,19 +29,22 @@ int main(int argc,char *argv[])
     bool check(true);
     std::vector<double> positionObject,information,positionReceiverVector;
     string filename;
-    returnSpeedPos infoSpeedPos;
-    returnInit retourinit;
+    xx_t whatever;
+    returnInit retour;
+
+    //@FRB
     position_t *positionReceiver = nullptr;
 
     (void)totalTime;
+    (void)whatever;
     //
     //        Initialization and verification of parameters
     //
     if (argc < 2) {
         //User interaction in the console
-        retourinit=init(nbrReceiver,angle,sizeLength,sizeWidth,speed,distance);
-        positionReceiverVector=retourinit.positionReceiver;
-        check=retourinit.check;
+        retour=init(nbrReceiver,angle,sizeLength,sizeWidth,speed,distance);
+        positionReceiverVector=retour.positionReceiver;
+        check=retour.check;
         if (check==true){
             positionReceiver = new(std::nothrow) position_t[nbrReceiver];
             // Create tab with the value of the position of all receivers
@@ -82,10 +95,8 @@ int main(int argc,char *argv[])
     }else{
         (void )showParameters (nbrReceiver,positionReceiver,angle,sizeLength,sizeWidth,speed,distance);
         totalTime=simulationTime (distance,speed);
-        cout << "Total Time : " << totalTime << " ms"<<endl;
-        infoSpeedPos = HorizontalAndVerticalSpeed (distance,speed,angle);
-        cout << "Initial position of the object, x: "<< infoSpeedPos.pos.x << " cm, y: " << infoSpeedPos.pos.y<<" cm"<<endl;
-        cout << "Speed horirontal : "<< infoSpeedPos.speed.hor<<" cm/ms, Speed vertical : "<<infoSpeedPos.speed.vert << " cm/ms"<<endl;
+        cout << "Total Time : " << totalTime << endl;
+        information = HorizontalAndVerticalSpeed (distance,speed,angle, &whatever);
     }
 
     /*
