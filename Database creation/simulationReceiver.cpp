@@ -81,59 +81,6 @@ position_t positionMoveObject (returnSpeedPos information ,unsigned int time){
     return positionObject;
 }
 /**
- * @brief objectInFrontofReceiver allows to know if the object is in front of the receiver
- * translation : change the position of the receiver to have the center of the object as origin
- * rotation : change the value of the position of the receiver to have a rectangle aligned to the axes x and y
- * use the function rectanglePointContains, It's now easy to know if the object is in the rectangle or not
- * @param positionObject position (x,y) object [cm]
- * @param dimensionObject dimension of the object [cm]
- * @param angle Angular position of the obstacle [°]
- * @param positionReceiver position receiver [cm]
- * @return  false : the object is not in front of the receiver
- *          true : the object is in front of the receiver
- */
-bool objectInFrontofReceiver (position_t positionObject,dimension dimensionObject,int angle,position_t positionReceiver){
-    double rotRad;
-    bool retour;
-    position_t positionTranslation,positionRotation;
-
-    //Change the origin of the coordinate system, now the origin is the center of the object
-    positionTranslation.x = positionReceiver.x - positionObject.x;
-    positionTranslation.y = positionReceiver.y - positionObject.y;
-
-    //Convert degree to radian
-    rotRad = angle * PI / 180;
-
-    // I make a rotation at the point. Now the object is a rectangle aligned with axes
-    // Rotation matrix : ( xProj )   =   (  cos (angle)     - sin (angle)   ) ( dx )
-    //                   ( yProj )       (  sin (angle)       cos (angle)   ) ( dy )
-    positionRotation.x = cos(rotRad)*positionTranslation.x - sin(rotRad)*positionTranslation.y;
-    positionRotation.y = sin(rotRad)*positionTranslation.x + cos(rotRad)*positionTranslation.y;
-    retour = rectanglePointContains (dimensionObject, positionRotation);
-
-    return retour;
-}
-/**
- * @brief rectanglePointContains allows to know if the point is in the rectangle ( origin of the repere is the center of the object)
- * @param dimensionObject dimension of the object [cm]
- * @param positionRotation position of the object [cm]
- * @return true : if the point is in the rectangle
- *         false : if the point is not in the rectangle
- */
-bool rectanglePointContains (dimension dimensionObject, position_t positionRotation){
-    bool result(false);
-
-    if ((positionRotation.x >= - dimensionObject.length/2 )&& (positionRotation.x <= dimensionObject.length/2))
-    {
-        if ((positionRotation.y >= - dimensionObject.width/2)&& (positionRotation.y <= dimensionObject.width/2))
-        {
-            result = true;
-        }
-    }
-
-    return result;
-}
-/**
  * @brief rotationCorner Center of the object (0,0), Obtained position of corners after rotation
  * @param dimensionObject dimension of the object [cm]
  * @param angle Angular position of the obstacle [°]

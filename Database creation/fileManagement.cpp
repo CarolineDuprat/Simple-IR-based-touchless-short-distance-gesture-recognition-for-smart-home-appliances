@@ -3,17 +3,19 @@ using namespace std;
 
 /**
  * @brief writeFile write line data in a file
+ * @param lien where you want to create the file
  * @param nameFile name of the file
  * @param data ID, time, valid
  * @param nbrID number of ID
  * @return true: the line has been added to the file
  */
-bool writeFile (string nameFile,rec data[],int nbrID)
+bool writeFile (string lien , string nameFile,rec data[],int nbrID)
 {
     bool retour(false);
     nameFile += ".txt" ;
+    lien += nameFile;
     // open the file
-    ofstream monFlux(nameFile.c_str(),ios::app);
+    ofstream monFlux(lien.c_str(),ios::app);
     if(monFlux)
     {
         for (int compteur(0) ; compteur < nbrID ; compteur++){

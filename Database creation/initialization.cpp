@@ -1,3 +1,6 @@
+/**
+  * @file Initialization and verification of parameters
+  */
 
 #include "initialization.h"
 using namespace std;

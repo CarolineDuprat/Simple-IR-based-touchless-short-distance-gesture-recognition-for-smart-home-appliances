@@ -13,9 +13,9 @@ int main(int argc,char *argv[])
 {
     int nbrReceiver, angle(0), c(2),j(0),totalTime;
     double distance,speed;
-    bool check(true),inRectangle;
+    bool check(true),inRectangle,write;
     std::vector<double> positionReceiverVector;
-    string filename;
+    string filename,lien(" C:\"");
     returnSpeedPos infoSpeedPos;
     returnInit retourinit;
     position_t *positionReceiver = nullptr;
@@ -24,7 +24,6 @@ int main(int argc,char *argv[])
     dimension dimensionObject;
     posCorner positionCornerRotation, positionCorner;
 
-    (void)totalTime;
     //
     //        Initialization and verification of parameters
     //
@@ -81,18 +80,24 @@ int main(int argc,char *argv[])
     if (check==false){
         cout << "Error Parameters" << endl;
     }else{
+        // show parameters
         (void )showParameters (nbrReceiver,positionReceiver,angle,dimensionObject,speed,distance);
+
+        //Calcul the total time
         totalTime=simulationTime (distance,speed);
         cout << "Total Time : " << totalTime << " ms"<<endl;
+
+        //Calcul initial position of the object, horirontal & vertical speed
         infoSpeedPos = HorizontalAndVerticalSpeed (distance,speed,angle);
         cout << "Initial position of the object, x: "<< infoSpeedPos.pos.x << " cm, y: " << infoSpeedPos.pos.y<<" cm"<<endl;
         cout << "Speed horirontal : "<< infoSpeedPos.speed.hor<<" cm/ms, Speed vertical : "<<infoSpeedPos.speed.vert << " cm/ms"<<endl;
         data = new(std::nothrow) rec[nbrReceiver];
+
         // Add the ID of each receiver in binaire
         for (int i=0;i< nbrReceiver;i++){
             data [i].ID=1 << i;
-            cout<<data [i].ID <<endl;
         }
+
         //Position Corner after the rotation
         positionCornerRotation = rotationCorner (dimensionObject,angle);
         cout << "Position Corner, (0,0) : Position of the center of the object  " << endl;
@@ -100,13 +105,35 @@ int main(int argc,char *argv[])
         cout << "c2 : "<<positionCornerRotation.c2.x << " , "<<positionCornerRotation.c2.y << endl;
         cout << "c3 : "<<positionCornerRotation.c3.x << " , "<<positionCornerRotation.c3.y << endl;
         cout << "c4 : "<<positionCornerRotation.c4.x << " , "<<positionCornerRotation.c4.y << endl;
+
         for (int t=0;t< totalTime+1;t++){
+
+            //Calcul the new position of the object after time=t
             positionObject=positionMoveObject (infoSpeedPos ,t);
             cout << "Position of the object, x: "<< positionObject.x << " cm, y: " << positionObject.y<<" cm"<<endl;
+
+            //Calcul the new position of corners
             positionCorner=ReelPositionCorner (positionObject,positionCornerRotation);
+
             for (int r=0;r<nbrReceiver;r++){
+
+                //Check if the receiver is in the object
                 inRectangle=ReceiverCovered (positionReceiver[r],positionCorner);
-                cout << "R" << r << " : " << inRectangle<<endl;
+                if ((inRectangle==1)&&(data[r].valid==0)){
+                    data[r].time=t;
+                    data[r].valid=1;
+                }else if(inRectangle==1){
+                    data[r].valid=1;
+                }else{
+                    data[r].time=0;
+                    data[r].valid=0;
+                }
+                cout << data[r].ID << " : " << inRectangle<<", time : "<<data[r].time<< ",valid : "<<data[r].valid<<endl;
+            }
+            //write data in the file
+            write=writeFile (argv[0],filename,data,nbrReceiver);
+            if (write==true){
+                cout << "The line has been added in the file" <<endl;
             }
         }
     }
