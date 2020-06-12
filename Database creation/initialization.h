@@ -19,10 +19,16 @@ typedef struct {
     bool check;
 } returnInit;
 
-returnInit init(int& nbrReceiver,int& direction,double& sizeLength,double& sizeWidth,double& speed,double& distance);
-bool checkAllParameters (int const nbrReceiver,position_t positionReceiver[] ,int const angle,double const distance,double const speed,double const sizeWidth,double const sizeLength);
+typedef struct {
+    double length;
+    double width;
+} dimension;
+
+returnInit init(int& nbrReceiver,int& direction,dimension& dimensionObject,double& speed,double& distance);
+bool checkAllParameters (int const nbrReceiver,position_t positionReceiver[] ,int const angle,double const distance,double const speed,dimension dimensionObject);
 std::vector <double> linearRelation (int const direction);
 double distanceMaxReceiverLinearRelationTab (int const direction,position_t positionReceiver[] ,int const nbrReceiver);
 double distanceMaxReceiverLinearRelationVector (int const direction,vector <double> positionReceiver,int const nbrReceiver);
-void showParameters (int nbrReceiver,position_t positionReceiver[],int direction,double sizeLength,double sizeWidth,double speed,double distance);
+void showParameters (int nbrReceiver,position_t positionReceiver[],int direction,dimension dimensionObject,double speed,double distance);
+
 #endif // INITIALIZATION_H

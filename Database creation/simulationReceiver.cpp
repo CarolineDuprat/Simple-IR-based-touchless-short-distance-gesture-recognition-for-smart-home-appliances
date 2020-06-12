@@ -14,7 +14,9 @@ using namespace std;
  * @return the total time of the simulation [ms]
  */
 int simulationTime (double const distance,double const speed){
+    // speed[m/s] = speed[cm/ms]*1/10
     int time=10*(distance*2)/speed;
+    //example: if reel time is 5.6 => time=5; but we want to travel the whole distance => time = time+1
     if (time < 10*(distance*2)/speed){
         time += 1;
     }
@@ -33,6 +35,7 @@ returnSpeedPos HorizontalAndVerticalSpeed (double const distance,double const sp
     int totalTime;
     returnSpeedPos retour;
 
+    //Convert degree to radian
     angleRad = angle * PI / 180;
 
     //Initial position
@@ -62,20 +65,18 @@ returnSpeedPos HorizontalAndVerticalSpeed (double const distance,double const sp
 /**
  * @brief positionMoveObject Calcul the position of the object
  * @param information return of the function HorizontalAndVerticalSpeed :
- *         information[0] : x Intial position [cm], information[1] : y Intial position [cm]
- *         information[2] : HorizontalSpeed [cm/ms], information[3] : VerticalSpeed [cm/ms]
- *         information[4] : 1 No error parameters ; 0 Error
+ *         information.pos position of the object [cm]
+ *         information.speed : horizontal and vertical speed [cm/ms]
  * @param time time of the simulation [ms]
- * @return positionObject[0] : x position [cm]; positionObject[1] : y position [cm]
+ * @return positionObject [cm]
  */
-std::vector<double> positionMoveObject (std::vector<double> information ,unsigned int time)
-{
-    std::vector<double> positionObject(2);
+position_t positionMoveObject (returnSpeedPos information ,unsigned int time){
+    position_t positionObject;
 
     // x Object = x Intial Object + HorizontalSpeed * time
-    positionObject[0]=information[0]+information [2]*time;
+    positionObject.x=information.pos.x+information.speed.hor*time;
     // y Object = y Intial Object + VerticalSpeed * time
-    positionObject[1]=information[1]+information [3]*time;
+    positionObject.y=information.pos.y+information.speed.vert*time;
 
     return positionObject;
 }
@@ -85,56 +86,51 @@ std::vector<double> positionMoveObject (std::vector<double> information ,unsigne
  * rotation : change the value of the position of the receiver to have a rectangle aligned to the axes x and y
  * use the function rectanglePointContains, It's now easy to know if the object is in the rectangle or not
  * @param positionObject position (x,y) object [cm]
- * @param sizeLength rectangle length [cm]
- * @param sizeWidth rectangle width [cm]
+ * @param dimensionObject dimension of the object [cm]
  * @param angle Angular position of the obstacle [°]
  * @param positionReceiverX position x receiver [cm]
  * @param positionReceiverY position y receiver [cm]
- * @return -1 : Error
- *          0 : the object is not in front of the receiver
- *          1 : the object is in front of the receiver
+ * @return  false : the object is not in front of the receiver
+ *          true : the object is in front of the receiver
  */
-int objectInFrontofReceiver (std::vector<double> positionObject,double sizeLength, double sizeWidth,int angle,double positionReceiverX,double positionReceiverY){
-    double dx,dy,rotRad,xProj,yProj;
-    int retour;
-    if ((sizeLength<=0)||(sizeWidth<=0)||(angle<0)||(angle>359)){
-        retour=-1;
-    }else{
-        //Change the origin of the coordinate system, now the origin is the center of the object
-        dx = positionReceiverX - positionObject [0];
-        dy = positionReceiverY - positionObject [1];
-        rotRad = angle * PI / 180;
-        // I make a rotation at the point. Now the object is a rectangle aligned with axes
-        // Rotation matrix : ( xProj )   =   (  cos (angle)     - sin (angle)   ) ( dx )
-        //                   ( yProj )       (  sin (angle)       cos (angle)   ) ( dy )
-        xProj = cos(rotRad)*dx - sin(rotRad)*dy;
-        yProj = sin(rotRad)*dx + cos(rotRad)*dy;
-        retour = rectanglePointContains (sizeLength,sizeWidth, xProj, yProj);
-    }
+bool objectInFrontofReceiver (position_t positionObject,dimension dimensionObject,int angle,position_t positionReceiver){
+    double rotRad;
+    bool retour;
+    position_t positionTranslation,positionRotation;
+
+    //Change the origin of the coordinate system, now the origin is the center of the object
+    positionTranslation.x = positionReceiver.x - positionObject.x;
+    positionTranslation.y = positionReceiver.y - positionObject.y;
+
+    //Convert degree to radian
+    rotRad = angle * PI / 180;
+
+    // I make a rotation at the point. Now the object is a rectangle aligned with axes
+    // Rotation matrix : ( xProj )   =   (  cos (angle)     - sin (angle)   ) ( dx )
+    //                   ( yProj )       (  sin (angle)       cos (angle)   ) ( dy )
+    positionRotation.x = cos(rotRad)*positionTranslation.x - sin(rotRad)*positionTranslation.y;
+    positionRotation.y = sin(rotRad)*positionTranslation.x + cos(rotRad)*positionTranslation.y;
+    retour = rectanglePointContains (dimensionObject, positionRotation);
+
     return retour;
 }
 /**
  * @brief rectanglePointContains allows to know if the point is in the rectangle ( origin of the repere is the center of the object)
- * @param sizeLength rectangle length [cm]
- * @param sizeWidth rectangle width [cm]
- * @param pointX x point coordinate [cm]
- * @param pointY y point coordinate [cm]
- * @return 1 : if the point is in the rectangle
- *         0 : if the point is not in the rectangle
- *        -1 : error parameter
+ * @param dimensionObject dimension of the object [cm]
+ * @param positionRotation position of the object [cm]
+ * @return true : if the point is in the rectangle
+ *         false : if the point is not in the rectangle
  */
-int rectanglePointContains (double sizeLength, double sizeWidth, double pointX, double pointY){
-    int result (0);
-    if ((sizeLength<=0)||(sizeWidth<=0)){
-        result=-1;
-    }else{
-        if ((pointX >= - sizeLength/2 )&& (pointX <= sizeLength/2))
+bool rectanglePointContains (dimension dimensionObject, position_t positionRotation){
+    bool result(false);
+
+    if ((positionRotation.x >= - dimensionObject.length/2 )&& (positionRotation.x <= dimensionObject.length/2))
+    {
+        if ((positionRotation.y >= - dimensionObject.width/2)&& (positionRotation.y <= dimensionObject.width/2))
         {
-            if ((pointY >= - sizeWidth/2)&& (pointY <= sizeWidth/2))
-            {
-                result = 1;
-            }
+            result = true;
         }
     }
+
     return result;
 }

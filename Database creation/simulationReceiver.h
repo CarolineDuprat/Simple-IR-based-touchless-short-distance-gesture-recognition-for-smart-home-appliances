@@ -22,8 +22,8 @@ typedef struct {
 
 int simulationTime (double const distance,double const speed);
 returnSpeedPos HorizontalAndVerticalSpeed (double const distance,double const speed,int const angle);
-std::vector<double> positionMoveObject (std::vector<double> information ,unsigned int time);
-int objectInFrontofReceiver (std::vector<double> positionObject,double sizeLength, double sizeWidth,int angle,double positionReceiverX,double positionReceiverY);
-int rectanglePointContains (double sizeLength, double sizeWidth, double pointX, double pointY);
+position_t positionMoveObject (returnSpeedPos information ,unsigned int time);
+bool objectInFrontofReceiver (std::vector<double> positionObject,dimension dimensionObject,int angle,position_t positionReceiver);
+bool rectanglePointContains (dimension dimensionObject, position_t positionRotation);
 
 #endif // SIMULATIONRECEIVER_H

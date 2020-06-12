@@ -5,15 +5,14 @@
  * @brief init initialization of all parameters with User interaction in the console
  * @param nbrReceiver Number of Receiver
  * @param direction Angular position of the obstacle[°]
- * @param sizeLength rectangle length [cm]
- * @param sizeWidth rectangle width [cm]
+ * @param dimensionObject dimension of the object [cm]
  * @param speed speed of the object [m/s]
  * @param distance distance from object center to device center [cm]
  * @param positionReceiverVector position of all receivers
  * @return retour.check : true no error, false error
  *         retour.positionReceiver : return a vector with all positions of receivers [cm]
  */
-returnInit init(int& nbrReceiver,int& direction,double& sizeLength,double& sizeWidth,double& speed,double& distance)
+returnInit init(int& nbrReceiver,int& direction,dimension& dimensionObject,double& speed,double& distance)
 {
     returnInit retour;
     retour.check=true;
@@ -46,12 +45,12 @@ returnInit init(int& nbrReceiver,int& direction,double& sizeLength,double& sizeW
     else{
         do{
             cout << "Object size : width [cm] ? must be greater than " << sizeWidthMin <<" cm" << endl;
-            cin >> sizeWidth;
-        }while(sizeWidth<sizeWidthMin);
+            cin >> dimensionObject.width;
+        }while(dimensionObject.width<sizeWidthMin);
         do{
             cout << "length [cm] ?" << endl;
-            cin >> sizeLength;
-        }while(sizeLength<=0);
+            cin >> dimensionObject.length;
+        }while(dimensionObject.length<=0);
         do{
             cout << "Object speed ? [m/s] " << endl;
             cin >> speed;
@@ -72,19 +71,18 @@ returnInit init(int& nbrReceiver,int& direction,double& sizeLength,double& sizeW
  * @param angle Angular position of the obstacle [°]
  * @param distance distance from object center to device center [cm]
  * @param speed speed of the object [m/s]
- * @param sizeWidth rectangle width [cm]
- * @param sizeLength rectangle length [cm]
+ * @param dimensionObject dimension of the object [cm]
  * @return true : No Error ; false : Error Parameters
  */
-bool checkAllParameters (int const nbrReceiver,position_t positionReceiver[] ,int const angle,double const distance,double const speed,double const sizeWidth,double const sizeLength){
+bool checkAllParameters (int const nbrReceiver,position_t positionReceiver[] ,int const angle,double const distance,double const speed,dimension dimensionObject){
     bool check(true);
     double distancemin(distanceMaxReceiverLinearRelationTab(angle,positionReceiver,nbrReceiver));
     //Check Paramaters
-    if ((angle<0)||(angle>359)||(sizeLength<=0)||(speed<=0)||(distance<=0)||(distancemin==0)){
+    if ((angle<0)||(angle>359)||(dimensionObject.length<=0)||(speed<=0)||(distance<=0)||(distancemin==0)){
         check=false;
         cout << "Error Parameters" << endl;
     // Check if the width is large enough to cover all sensors
-    }if (sizeWidth<distancemin*2){
+    }if (dimensionObject.width<distancemin*2){
         cout << "Error, sizeWidth > " << distancemin*2 << endl;
         check=false;
     }
@@ -209,18 +207,17 @@ double distanceMaxReceiverLinearRelationVector (int const direction,vector <doub
  * @param nbrReceiver number of Receivers
  * @param positionReceiver all positions of receiver [cm]
  * @param direction Angular position of the obstacle [°]
- * @param sizeLength rectangle length [cm]
- * @param sizeWidth rectangle width [cm]
+ * @param dimensionObject dimension of the object [cm]
  * @param speed speed of the object [m/s]
  * @param distance distance from object center to device center [cm]
  */
-void showParameters (int nbrReceiver,position_t positionReceiver[],int direction,double sizeLength,double sizeWidth,double speed,double distance){
+void showParameters (int nbrReceiver,position_t positionReceiver[],int direction,dimension dimensionObject,double speed,double distance){
     cout << "Number of Receivers : " << nbrReceiver << endl;
     for (int i(0);i<nbrReceiver;i++){
         cout << "Receiver " << i <<", x: " << positionReceiver[i].x << " cm, y : "<< positionReceiver[i].y<< " cm" <<endl;
     }
     cout << "Angular position of the obstacle : "<<direction << " degree"<<endl;
-    cout << "Object size : " << sizeLength << " cm length, " <<sizeWidth<< " cm width " << endl;
+    cout << "Object size : " << dimensionObject.length << " cm length, " <<dimensionObject.width<< " cm width " << endl;
     cout << "Object speed : "<< speed << " m/s"<<endl;
     cout << "Object distance : "<< distance << " cm"<<endl;
 }

@@ -28,4 +28,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     initialization.h \
     fileManagement.h \
-    simulationReceiver.h
+    simulationReceiver.h \
+    structure.h

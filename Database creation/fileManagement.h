@@ -7,7 +7,13 @@
 #include <math.h>
 #include <vector>
 
-bool writeFile (std::string nameFile,double data [][3],int nbrID);
-std::vector<double> iDDecimal (int nbrID);
+typedef struct {
+    unsigned ID;
+    int time;
+    bool valid;
+} rec;
+
+bool writeFile (std::string nameFile,rec data,int nbrID);
+std::vector<unsigned> iDBinaire  (int nbrID);
 
 #endif // FILEMANAGEMENT_H

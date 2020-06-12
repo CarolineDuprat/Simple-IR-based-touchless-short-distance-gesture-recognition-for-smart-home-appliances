@@ -8,7 +8,7 @@ using namespace std;
  * @param nbrID number of ID
  * @return true: the line has been added to the file
  */
-bool writeFile (string nameFile,double data [][3],int nbrID)
+bool writeFile (string nameFile,rec data[],int nbrID)
 {
     bool retour(false);
     nameFile += ".txt" ;
@@ -17,7 +17,7 @@ bool writeFile (string nameFile,double data [][3],int nbrID)
     if(monFlux)
     {
         for (int compteur(0) ; compteur < nbrID ; compteur++){
-            monFlux << "Ox" << std::hex << data [compteur][0] << std::dec << " "<< data [compteur][1] << " "<<  std::dec << data [compteur][2] << " ";
+            monFlux << "Ox" << std::hex << data[compteur].ID << std::dec << " "<< data [compteur].time << " "<<  std::dec << data [compteur].valid << " ";
         }
         monFlux << endl;
         retour=true;
@@ -35,7 +35,7 @@ bool writeFile (string nameFile,double data [][3],int nbrID)
 std::vector<unsigned> iDBinaire  (int nbrID){
     std::vector<unsigned> iD(nbrID);
     for (int i(0);i<nbrID;i++){
-        iD[i] = 1 << nbrID;
+        iD[i] = 1 << i;
     }
     return iD;
 }
