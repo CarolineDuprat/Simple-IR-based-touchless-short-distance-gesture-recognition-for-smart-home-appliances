@@ -1,6 +1,6 @@
 
 #include "initialization.h"
-
+using namespace std;
 /**
  * @brief init initialization of all parameters with User interaction in the console
  * @param nbrReceiver Number of Receiver

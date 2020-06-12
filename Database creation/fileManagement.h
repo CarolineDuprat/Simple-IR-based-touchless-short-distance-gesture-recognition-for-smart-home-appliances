@@ -6,14 +6,9 @@
 #include <string>
 #include <math.h>
 #include <vector>
-
-typedef struct {
-    unsigned ID;
-    int time;
-    bool valid;
-} rec;
+#include "structure.h"
 
 bool writeFile (std::string nameFile,rec data,int nbrID);
-std::vector<unsigned> iDBinaire  (int nbrID);
+std::string nameFile (int nbrReceiver,position_t positionReceiver[],int angle, double distance,double speed,dimension dimensionObject);
 
 #endif // FILEMANAGEMENT_H

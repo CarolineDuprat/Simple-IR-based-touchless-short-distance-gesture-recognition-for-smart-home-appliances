@@ -88,8 +88,7 @@ position_t positionMoveObject (returnSpeedPos information ,unsigned int time){
  * @param positionObject position (x,y) object [cm]
  * @param dimensionObject dimension of the object [cm]
  * @param angle Angular position of the obstacle [°]
- * @param positionReceiverX position x receiver [cm]
- * @param positionReceiverY position y receiver [cm]
+ * @param positionReceiver position receiver [cm]
  * @return  false : the object is not in front of the receiver
  *          true : the object is in front of the receiver
  */
@@ -133,4 +132,152 @@ bool rectanglePointContains (dimension dimensionObject, position_t positionRotat
     }
 
     return result;
+}
+/**
+ * @brief rotationCorner Center of the object (0,0), Obtained position of corners after rotation
+ * @param dimensionObject dimension of the object [cm]
+ * @param angle Angular position of the obstacle [°]
+ * @return position of corners
+ */
+posCorner rotationCorner (dimension dimensionObject,int angle){
+    posCorner positionCorner,positionCornerRotation;
+    double rotRad;
+
+    //Position c1 : (l/2,w/2)
+    positionCorner.c1.x=dimensionObject.length/2;
+    positionCorner.c1.y=dimensionObject.width/2;
+    //Position c2 : (l/2,-w/2)
+    positionCorner.c2.x=dimensionObject.length/2;
+    positionCorner.c2.y=-dimensionObject.width/2;
+    //Position c3 : (-l/2,-w/2)
+    positionCorner.c3.x=-dimensionObject.length/2;
+    positionCorner.c3.y=-dimensionObject.width/2;
+    //Position c4 : (-l/2,w/2)
+    positionCorner.c4.x=-dimensionObject.length/2;
+    positionCorner.c4.y=dimensionObject.width/2;
+
+    //Convert degree to radian
+    rotRad = angle * PI / 180;
+
+    // Rotation matrix : ( xProj )   =   (  cos (angle)     - sin (angle)   ) ( dx )
+    //                   ( yProj )       (  sin (angle)       cos (angle)   ) ( dy )
+
+    //Position c1 Rotation :
+    positionCornerRotation.c1.x=positionCorner.c1.x*cos(rotRad) - positionCorner.c1.y*sin(rotRad);
+    positionCornerRotation.c1.y=positionCorner.c1.x*sin(rotRad) + positionCorner.c1.y*cos(rotRad);
+    //Position c2 Rotation :
+    positionCornerRotation.c2.x=positionCorner.c2.x*cos(rotRad) - positionCorner.c2.y*sin(rotRad);
+    positionCornerRotation.c2.y=positionCorner.c2.x*sin(rotRad) + positionCorner.c2.y*cos(rotRad);
+    //Position c3 Rotation :
+    positionCornerRotation.c3.x=positionCorner.c3.x*cos(rotRad) - positionCorner.c3.y*sin(rotRad);
+    positionCornerRotation.c3.y=positionCorner.c3.x*sin(rotRad) + positionCorner.c3.y*cos(rotRad);
+    //Position c4 Rotation :
+    positionCornerRotation.c4.x=positionCorner.c4.x*cos(rotRad) - positionCorner.c4.y*sin(rotRad);
+    positionCornerRotation.c4.y=positionCorner.c4.x*sin(rotRad) + positionCorner.c4.y*cos(rotRad);
+
+
+    return positionCornerRotation;
+}
+/**
+ * @brief ReceiverCovered allows to know if the point is in a convex polygon. Calcul all the determinant, and check the result
+ * If all signs are the same => receiver is in the rectangle
+ * @param positionObject position of the object [cm]
+ * @param positionReceiver position of the receiver [cm]
+ * @param positionCornerRotation position of corners [cm]
+ * @return true : the receiver is in the rectangle
+ *        false : the receiver is not in the rectangle
+ */
+bool ReceiverCovered (position_t positionReceiver,posCorner positionCorner){
+    bool result(true);
+    int signFinal,sign;
+
+    //Check the sign between det(C1C2,C1R) and det(C2C3,C2R)
+    signFinal= signdet (positionCorner.c1,positionCorner.c2,positionReceiver);
+    sign=signdet (positionCorner.c2,positionCorner.c3,positionReceiver);
+    if (signFinal==0){
+        signFinal= sign;
+    }else if ((signFinal!= sign)&&(sign!=0)){
+        result=false;
+    }
+    //Check the sign between det(C1C2,C1R) and det(C3C4,C3R)
+    if (result==true){
+        sign=signdet (positionCorner.c3,positionCorner.c4,positionReceiver);
+        if (signFinal==0){
+            signFinal= sign;
+        }else if ((signFinal!= sign)&&(sign!=0)){
+            result=false;
+        }
+    }
+    //Check the sign between det(C1C2,C1R) and det(C4C1,C4R)
+    if (result==true){
+        sign=signdet (positionCorner.c4,positionCorner.c1,positionReceiver);
+        if (signFinal==0){
+            signFinal= sign;
+        }else if ((signFinal!= sign)&&(sign!=0)){
+            result=false;
+        }
+    }
+
+    return result;
+}
+/**
+ * @brief ReelPositionCorner translation of the origin
+ * @param positionObject positionObject [cm]
+ * @param positionCornerRotation position corner after the rotation, the origin is the center of the object [cm]
+ * @return  reel position of corners [cm]
+ */
+posCorner ReelPositionCorner (position_t positionObject,posCorner positionCornerRotation){
+    posCorner positionCorner;
+    double x(positionObject.x),y(positionObject.y);
+
+    // The position of the object is not (0,0), it's (x,y)
+    positionCorner.c1.x=positionCornerRotation.c1.x + x;
+    positionCorner.c1.y=positionCornerRotation.c1.y + y;
+    positionCorner.c2.x=positionCornerRotation.c2.x + x;
+    positionCorner.c2.y=positionCornerRotation.c2.y + y;
+    positionCorner.c3.x=positionCornerRotation.c3.x + x;
+    positionCorner.c3.y=positionCornerRotation.c3.y + y;
+    positionCorner.c4.x=positionCornerRotation.c4.x + x;
+    positionCorner.c4.y=positionCornerRotation.c4.y + y;
+
+    cout << "Position Corner,( "<< positionObject.x<<" , "<<positionObject.y<<" ): Position of the center of the object  " << endl;
+    cout << "c1 : "<<positionCorner.c1.x << " , "<<positionCorner.c1.y << endl;
+    cout << "c2 : "<<positionCorner.c2.x << " , "<<positionCorner.c2.y << endl;
+    cout << "c3 : "<<positionCorner.c3.x << " , "<<positionCorner.c3.y << endl;
+    cout << "c4 : "<<positionCorner.c4.x << " , "<<positionCorner.c4.y << endl;
+
+    return positionCorner;
+}
+/**
+ * @brief signdet calculation of the determinant between the vector C1C2 and the vector C1R, allows to know if the receiver is in the left or in the right of the vector C1C2
+ * @param positionCorner1 position of the corner 1 [cm]
+ * @param positionCorner2 position of the corner 2 [cm]
+ * @param positionReceiver position of the receiver [cm]
+ * @return 0 : vectors are aligned
+ *         1 : determinant is positive
+ *        -1 : determinant is negative
+ */
+int signdet (position_t positionCorner1,position_t positionCorner2,position_t positionReceiver){
+    position_t vecteurC1C2,vecteurC1R;
+    int sign(0),determinant;
+
+    // Calcul vecteur C1C2 : C1 ( x ) , C2 ( x' )   /C1C2 ( x' - x )
+    //                          ( y ) ,    ( y' )         ( y' - y )
+    vecteurC1C2.x=positionCorner2.x - positionCorner1.x;
+    vecteurC1C2.y=positionCorner2.y - positionCorner1.y;
+    //Calcul vecteur C1R
+    vecteurC1R.x=positionReceiver.x - positionCorner1.x;
+    vecteurC1R.y=positionReceiver.y - positionCorner1.y;
+
+    //Calcul determinant /C1C2 & /C1R
+    // det(/C1C2,/C1R)=det ( (x) , (x') )=xy' - x'y
+    //                     ( (y) , (y') )
+    determinant=vecteurC1C2.x * vecteurC1R.y -  vecteurC1R.x * vecteurC1C2.y;
+
+    if (determinant>0){
+        sign=1;
+    }else if (determinant<0){
+        sign=-1;
+    }
+    return sign;
 }

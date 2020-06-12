@@ -25,19 +25,39 @@ bool writeFile (string nameFile,rec data[],int nbrID)
     return retour;
 }
 /**
- * @brief iDDecimal generated an ID for each receiver in decimal. We will displaythis number in hexa in the function writeFile
- * R1 : 00000001, R2 : 00000010, .... R8 : 10000000
- * @param nbrID number of ID
- * @return the iD list
- *
- * With doubles: nbrID = 0 => pow(2,0) = 1.0 -> binary != 000001
+ * @brief nameFile create the file name
+ * @param nbrReceiver number of receiver
+ * @param positionReceiver position x and y of all paramaters [cm]
+ * @param angle Angular position of the obstacle [°]
+ * @param distance distance from object center to device center [cm]
+ * @param speed speed of the object [m/s]
+ * @param dimensionObject dimension of the object [cm]
+ * @return the file name
  */
-std::vector<unsigned> iDBinaire  (int nbrID){
-    std::vector<unsigned> iD(nbrID);
-    for (int i(0);i<nbrID;i++){
-        iD[i] = 1 << i;
-    }
-    return iD;
-}
+string nameFile (int nbrReceiver,position_t positionReceiver[],int angle, double distance,double speed,dimension dimensionObject)
+{
+    string nameFile;
 
+    nameFile += to_string(nbrReceiver);
+    for (int compteur(0) ; compteur < nbrReceiver ; compteur++){
+        nameFile += to_string(positionReceiver[compteur].x);
+        nameFile.erase(nameFile.size() - 4);
+        nameFile += '_';
+        nameFile += to_string(positionReceiver[compteur].y);
+        nameFile.erase(nameFile.size() - 4);
+        nameFile += "_";
+    }
+    nameFile += to_string(angle);
+    nameFile += to_string(distance);
+    nameFile.erase(nameFile.size() - 4);
+    nameFile += to_string(speed);
+    nameFile.erase(nameFile.size() - 4);
+    nameFile += to_string(dimensionObject.width);
+    nameFile.erase(nameFile.size() - 4);
+    nameFile += '_';
+    nameFile += to_string(dimensionObject.length);
+    nameFile.erase(nameFile.size() - 4);
+
+    return nameFile;
+}
 

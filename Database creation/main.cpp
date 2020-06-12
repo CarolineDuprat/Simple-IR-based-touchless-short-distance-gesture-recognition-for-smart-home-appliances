@@ -13,7 +13,7 @@ int main(int argc,char *argv[])
 {
     int nbrReceiver, angle(0), c(2),j(0),totalTime;
     double distance,speed;
-    bool check(true);
+    bool check(true),inRectangle;
     std::vector<double> positionReceiverVector;
     string filename;
     returnSpeedPos infoSpeedPos;
@@ -22,6 +22,7 @@ int main(int argc,char *argv[])
     rec *data =nullptr;
     position_t positionObject;
     dimension dimensionObject;
+    posCorner positionCornerRotation, positionCorner;
 
     (void)totalTime;
     //
@@ -40,18 +41,20 @@ int main(int argc,char *argv[])
                 positionReceiver[i].y = positionReceiverVector[j+1];
                 j=j+2;
             }
-            //add file name
+            // Create file name
+            filename += nameFile (nbrReceiver,positionReceiver,angle,distance,speed,dimensionObject);
         }
     } else {
         //Read Command-line argument
-        nbrReceiver=stoi(argv[1]);
+        nbrReceiver=int(stof(argv[1]));
         positionReceiver = new(std::nothrow) position_t[nbrReceiver];
+        //Check number of arguments
         if ( argc != (nbrReceiver*2 + 7)){
             cout<<"Error number of arguments"<<endl;
             check = false;
         }else {
             // Create file name
-            for (int i=0 ; i<argc;i++){
+            for (int i=1 ; i<argc;i++){
                 filename += argv[i];
                 filename += '_';
             }
@@ -61,14 +64,12 @@ int main(int argc,char *argv[])
                 positionReceiver[i].y = stof(argv[c+1]);
                 c=c+2;
             }
-            angle= stoi(argv[2+nbrReceiver*2]);
+            angle= int(stof(argv[2+nbrReceiver*2]));
             distance= stof(argv[3+nbrReceiver*2]);
             speed=stof(argv[4+nbrReceiver*2]);
             dimensionObject.width=stof(argv[5+nbrReceiver*2]);
             dimensionObject.length=stof(argv[6+nbrReceiver*2]);
-
             //The function stof returns error
-            //The function stoi returns 0 if error
 
             //Check parameters
             check = checkAllParameters (nbrReceiver,positionReceiver,angle,distance,speed,dimensionObject);
@@ -87,35 +88,28 @@ int main(int argc,char *argv[])
         cout << "Initial position of the object, x: "<< infoSpeedPos.pos.x << " cm, y: " << infoSpeedPos.pos.y<<" cm"<<endl;
         cout << "Speed horirontal : "<< infoSpeedPos.speed.hor<<" cm/ms, Speed vertical : "<<infoSpeedPos.speed.vert << " cm/ms"<<endl;
         data = new(std::nothrow) rec[nbrReceiver];
+        // Add the ID of each receiver in binaire
         for (int i=0;i< nbrReceiver;i++){
             data [i].ID=1 << i;
             cout<<data [i].ID <<endl;
         }
+        //Position Corner after the rotation
+        positionCornerRotation = rotationCorner (dimensionObject,angle);
+        cout << "Position Corner, (0,0) : Position of the center of the object  " << endl;
+        cout << "c1 : "<<positionCornerRotation.c1.x << " , "<<positionCornerRotation.c1.y << endl;
+        cout << "c2 : "<<positionCornerRotation.c2.x << " , "<<positionCornerRotation.c2.y << endl;
+        cout << "c3 : "<<positionCornerRotation.c3.x << " , "<<positionCornerRotation.c3.y << endl;
+        cout << "c4 : "<<positionCornerRotation.c4.x << " , "<<positionCornerRotation.c4.y << endl;
         for (int t=0;t< totalTime+1;t++){
             positionObject=positionMoveObject (infoSpeedPos ,t);
             cout << "Position of the object, x: "<< positionObject.x << " cm, y: " << positionObject.y<<" cm"<<endl;
-        }
-
-    }
-
-    /*
-    if (check==true) {
-        totalTime=simulationTime (distance,speed);
-        information = HorizontalAndVerticalSpeed (distance,speed,angle, &whatever);
-        cout << "totalTime: " << totalTime << endl;
-        for (unsigned int i = 0; i < information.size(); i++) {
-            cout << "HorizontalAndVerticalSpeed(" << i << "): " << information.at(i) << endl;
-        }
-        double dataReceiver [nbrReceiver][3];
-        std::vector<double> iD=iDDecimal (nbrReceiver);
-        for (int i=0;i< nbrReceiver;i++){
-            dataReceiver [i][0]=iD[i];
-        }
-        for (int t=0;t< totalTime+1;t++){
-            positionObject=positionMoveObject (information ,t);
+            positionCorner=ReelPositionCorner (positionObject,positionCornerRotation);
+            for (int r=0;r<nbrReceiver;r++){
+                inRectangle=ReceiverCovered (positionReceiver[r],positionCorner);
+                cout << "R" << r << " : " << inRectangle<<endl;
+            }
         }
     }
-    */
     delete[] positionReceiver;
     delete[] data;
 
