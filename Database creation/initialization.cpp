@@ -47,6 +47,14 @@ returnInit init(int& nbrReceiver,int& direction,dimension& dimensionObject,doubl
     }
     else{
         do{
+            cout << "Object distance [cm] ?  " << endl;
+            cin >> distance;
+        }while(distance<=0);
+        do{
+            cout << "Object speed ? [m/s] " << endl;
+            cin >> speed;
+        }while(speed<=0);
+        do{
             cout << "Object size : width [cm] ? must be greater than " << sizeWidthMin <<" cm" << endl;
             cin >> dimensionObject.width;
         }while(dimensionObject.width<sizeWidthMin);
@@ -54,14 +62,8 @@ returnInit init(int& nbrReceiver,int& direction,dimension& dimensionObject,doubl
             cout << "length [cm] ?" << endl;
             cin >> dimensionObject.length;
         }while(dimensionObject.length<=0);
-        do{
-            cout << "Object speed ? [m/s] " << endl;
-            cin >> speed;
-        }while(speed<=0);
-        do{
-            cout << "Object distance [cm] ?  " << endl;
-            cin >> distance;
-        }while(distance<=0);
+
+
         cout << "End of initialization  " << endl;
     }
 
