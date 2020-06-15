@@ -7,11 +7,14 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include "structure.h"
 
 int simulationTime (double const distance,double const speed);
-std::vector<double> HorizontalAndVerticalSpeed (double const distance,double const speed,int const angle);
-std::vector<double> positionMoveObject (std::vector<double> information ,unsigned int time);
-int objectInFrontofReceiver (std::vector<double> positionObject,double sizeLength, double sizeWidth,int angle,double positionReceiverX,double positionReceiverY);
-int rectanglePointContains (double sizeLength, double sizeWidth, double pointX, double pointY);
+returnSpeedPos HorizontalAndVerticalSpeed (double const distance,double const speed,int const angle);
+position_t positionMoveObject (returnSpeedPos information ,unsigned int time);
+posCorner rotationCorner (dimension dimensionObject,int angle);
+posCorner ReelPositionCorner (position_t positionObject,posCorner positionCornerRotation);
+int signdet (position_t positionCorner1,position_t positionCorner2,position_t positionReceiver);
+bool ReceiverCovered (position_t positionReceiver,posCorner positionCorner);
 
 #endif // SIMULATIONRECEIVER_H
