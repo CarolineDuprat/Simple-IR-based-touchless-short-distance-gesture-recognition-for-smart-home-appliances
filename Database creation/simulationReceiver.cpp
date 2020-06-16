@@ -86,22 +86,22 @@ position_t positionMoveObject (returnSpeedPos information ,unsigned int time){
  * @param angle Angular position of the obstacle [°]
  * @return position of corners
  */
-posCorner rotationCorner (dimension dimensionObject,int angle){
-    posCorner positionCorner,positionCornerRotation;
+std::vector<position_t> rotationCorner (dimension dimensionObject,int angle){
+    std::vector<position_t> positionCorner(4),positionCornerRotation(4);
     double rotRad;
 
-    //Position c1 : (l/2,w/2)
-    positionCorner.c1.x=dimensionObject.length/2;
-    positionCorner.c1.y=dimensionObject.width/2;
+    //Position c1 : (l/2,w/2);
+    positionCorner[0].x=dimensionObject.length/2;
+    positionCorner[0].y=dimensionObject.width/2;
     //Position c2 : (l/2,-w/2)
-    positionCorner.c2.x=dimensionObject.length/2;
-    positionCorner.c2.y=-dimensionObject.width/2;
+    positionCorner[1].x=dimensionObject.length/2;
+    positionCorner[1].y=-dimensionObject.width/2;
     //Position c3 : (-l/2,-w/2)
-    positionCorner.c3.x=-dimensionObject.length/2;
-    positionCorner.c3.y=-dimensionObject.width/2;
+    positionCorner[2].x=-dimensionObject.length/2;
+    positionCorner[2].y=-dimensionObject.width/2;
     //Position c4 : (-l/2,w/2)
-    positionCorner.c4.x=-dimensionObject.length/2;
-    positionCorner.c4.y=dimensionObject.width/2;
+    positionCorner[3].x=-dimensionObject.length/2;
+    positionCorner[3].y=dimensionObject.width/2;
 
     //Convert degree to radian
     rotRad = angle * PI / 180;
@@ -109,19 +109,11 @@ posCorner rotationCorner (dimension dimensionObject,int angle){
     // Rotation matrix : ( xProj )   =   (  cos (angle)     - sin (angle)   ) ( dx )
     //                   ( yProj )       (  sin (angle)       cos (angle)   ) ( dy )
 
-    //Position c1 Rotation :
-    positionCornerRotation.c1.x=positionCorner.c1.x*cos(rotRad) - positionCorner.c1.y*sin(rotRad);
-    positionCornerRotation.c1.y=positionCorner.c1.x*sin(rotRad) + positionCorner.c1.y*cos(rotRad);
-    //Position c2 Rotation :
-    positionCornerRotation.c2.x=positionCorner.c2.x*cos(rotRad) - positionCorner.c2.y*sin(rotRad);
-    positionCornerRotation.c2.y=positionCorner.c2.x*sin(rotRad) + positionCorner.c2.y*cos(rotRad);
-    //Position c3 Rotation :
-    positionCornerRotation.c3.x=positionCorner.c3.x*cos(rotRad) - positionCorner.c3.y*sin(rotRad);
-    positionCornerRotation.c3.y=positionCorner.c3.x*sin(rotRad) + positionCorner.c3.y*cos(rotRad);
-    //Position c4 Rotation :
-    positionCornerRotation.c4.x=positionCorner.c4.x*cos(rotRad) - positionCorner.c4.y*sin(rotRad);
-    positionCornerRotation.c4.y=positionCorner.c4.x*sin(rotRad) + positionCorner.c4.y*cos(rotRad);
-
+    //Position Rotation :
+    for (int i(0);i<4;i++){
+        positionCornerRotation[i].x=positionCorner[i].x*cos(rotRad) - positionCorner[i].y*sin(rotRad);
+        positionCornerRotation[i].y=positionCorner[i].x*sin(rotRad) + positionCorner[i].y*cos(rotRad);
+    }
 
     return positionCornerRotation;
 }
@@ -134,13 +126,13 @@ posCorner rotationCorner (dimension dimensionObject,int angle){
  * @return true : the receiver is in the rectangle
  *        false : the receiver is not in the rectangle
  */
-bool ReceiverCovered (position_t positionReceiver,posCorner positionCorner){
+bool ReceiverCovered (position_t positionReceiver,std::vector<position_t> positionCorner){
     bool result(true);
     int signFinal,sign;
 
     //Check the sign between det(C1C2,C1R) and det(C2C3,C2R)
-    signFinal= signdet (positionCorner.c1,positionCorner.c2,positionReceiver);
-    sign=signdet (positionCorner.c2,positionCorner.c3,positionReceiver);
+    signFinal= signdet (positionCorner[0],positionCorner[1],positionReceiver);
+    sign=signdet (positionCorner[1],positionCorner[2],positionReceiver);
     if (signFinal==0){
         signFinal= sign;
     }else if ((signFinal!= sign)&&(sign!=0)){
@@ -148,7 +140,7 @@ bool ReceiverCovered (position_t positionReceiver,posCorner positionCorner){
     }
     //Check the sign between det(C1C2,C1R) and det(C3C4,C3R)
     if (result==true){
-        sign=signdet (positionCorner.c3,positionCorner.c4,positionReceiver);
+        sign=signdet (positionCorner[2],positionCorner[3],positionReceiver);
         if (signFinal==0){
             signFinal= sign;
         }else if ((signFinal!= sign)&&(sign!=0)){
@@ -157,7 +149,7 @@ bool ReceiverCovered (position_t positionReceiver,posCorner positionCorner){
     }
     //Check the sign between det(C1C2,C1R) and det(C4C1,C4R)
     if (result==true){
-        sign=signdet (positionCorner.c4,positionCorner.c1,positionReceiver);
+        sign=signdet (positionCorner[3],positionCorner[0],positionReceiver);
         if (signFinal==0){
             signFinal= sign;
         }else if ((signFinal!= sign)&&(sign!=0)){
@@ -173,25 +165,20 @@ bool ReceiverCovered (position_t positionReceiver,posCorner positionCorner){
  * @param positionCornerRotation position corner after the rotation, the origin is the center of the object [cm]
  * @return  reel position of corners [cm]
  */
-posCorner ReelPositionCorner (position_t positionObject,posCorner positionCornerRotation){
-    posCorner positionCorner;
+std::vector<position_t> ReelPositionCorner (position_t positionObject,std::vector<position_t> positionCornerRotation){
+    std::vector<position_t> positionCorner(4);
     double x(positionObject.x),y(positionObject.y);
 
     // The position of the object is not (0,0), it's (x,y)
-    positionCorner.c1.x=positionCornerRotation.c1.x + x;
-    positionCorner.c1.y=positionCornerRotation.c1.y + y;
-    positionCorner.c2.x=positionCornerRotation.c2.x + x;
-    positionCorner.c2.y=positionCornerRotation.c2.y + y;
-    positionCorner.c3.x=positionCornerRotation.c3.x + x;
-    positionCorner.c3.y=positionCornerRotation.c3.y + y;
-    positionCorner.c4.x=positionCornerRotation.c4.x + x;
-    positionCorner.c4.y=positionCornerRotation.c4.y + y;
+    for (int i(0);i<4;i++){
+        positionCorner[0].x=positionCornerRotation[0].x + x;
+        positionCorner[0].y=positionCornerRotation[0].y + y;
+    }
 
     cout << "Position Corner,( "<< positionObject.x<<" , "<<positionObject.y<<" ): Position of the center of the object  " << endl;
-    cout << "c1 : "<<positionCorner.c1.x << " , "<<positionCorner.c1.y << endl;
-    cout << "c2 : "<<positionCorner.c2.x << " , "<<positionCorner.c2.y << endl;
-    cout << "c3 : "<<positionCorner.c3.x << " , "<<positionCorner.c3.y << endl;
-    cout << "c4 : "<<positionCorner.c4.x << " , "<<positionCorner.c4.y << endl;
+    for (int i(0);i<4;i++){
+        cout << "c1 : "<<positionCorner[i].x << " , "<<positionCorner[i].y << endl;
+    }
 
     return positionCorner;
 }

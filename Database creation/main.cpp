@@ -15,14 +15,14 @@ int main(int argc,char *argv[])
     double distance,speed;
     bool check(true),inRectangle,write;
     std::vector<double> positionReceiverVector;
-    string filename,lien(" C:\"");
+    std::vector<position_t> positionCornerRotation, positionCorner;
+    string filename,lien(" C:\"Users\"Caroline Duprat\"");
     returnSpeedPos infoSpeedPos;
     returnInit retourinit;
     position_t *positionReceiver = nullptr;
     rec *data =nullptr;
     position_t positionObject;
     dimension dimensionObject;
-    posCorner positionCornerRotation, positionCorner;
 
     //
     //        Initialization and verification of parameters
@@ -101,10 +101,10 @@ int main(int argc,char *argv[])
         //Position Corner after the rotation
         positionCornerRotation = rotationCorner (dimensionObject,angle);
         cout << "Position Corner, (0,0) : Position of the center of the object  " << endl;
-        cout << "c1 : "<<positionCornerRotation.c1.x << " , "<<positionCornerRotation.c1.y << endl;
-        cout << "c2 : "<<positionCornerRotation.c2.x << " , "<<positionCornerRotation.c2.y << endl;
-        cout << "c3 : "<<positionCornerRotation.c3.x << " , "<<positionCornerRotation.c3.y << endl;
-        cout << "c4 : "<<positionCornerRotation.c4.x << " , "<<positionCornerRotation.c4.y << endl;
+        cout << "c1 : "<<positionCornerRotation[0].x << " , "<<positionCornerRotation[0].y << endl;
+        cout << "c2 : "<<positionCornerRotation[1].x << " , "<<positionCornerRotation[1].y << endl;
+        cout << "c3 : "<<positionCornerRotation[2].x << " , "<<positionCornerRotation[2].y << endl;
+        cout << "c4 : "<<positionCornerRotation[3].x << " , "<<positionCornerRotation[3].y << endl;
 
         for (int t=0;t< totalTime+1;t++){
 

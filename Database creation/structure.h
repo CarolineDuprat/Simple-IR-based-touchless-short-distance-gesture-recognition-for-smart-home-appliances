@@ -34,10 +34,5 @@ typedef struct {
     double width;
 } dimension;
 
-typedef struct {
-    position_t c1;
-    position_t c2;
-    position_t c3;
-    position_t c4;
-} posCorner;
+
 #endif // STRUCTURE_H
