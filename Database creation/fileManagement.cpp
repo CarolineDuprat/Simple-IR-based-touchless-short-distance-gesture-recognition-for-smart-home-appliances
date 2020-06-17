@@ -1,8 +1,16 @@
+/**
+  * @file The program must return a file with the information returned by the receivers (ID, time, valid).
+  *
+  * For this, we will create a file whose name is created in the main for the command line and in the function nameFile for interaction with the user.
+  * We will then add a row to this file per millisecond.
+  * The function "writeFile" allows  to add a row.
+  */
+
 #include "fileManagement.h"
 using namespace std;
 
 /**
- * @brief writeFile write line data in a file
+ * @brief writeFile write row data in a file : Id (hex) , time (us), valid (boolean)
  * @param lien where you want to create the file
  * @param nameFile name of the file
  * @param data ID, time, valid

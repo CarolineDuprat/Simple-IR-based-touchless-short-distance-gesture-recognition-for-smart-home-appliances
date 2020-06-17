@@ -18,7 +18,7 @@
 #include "initialization.h"
 using namespace std;
 /**
- * @brief init initialization and verification of all parameters with User interaction in the console
+ * @brief init Initialization and verification of all parameters with User interaction in the console
  * @param nbrReceiver Number of Receiver
  * @param direction Angular position of the obstacle[°]
  * @param dimensionObject dimension of the object [cm]
@@ -33,6 +33,7 @@ returnInit init(int& nbrReceiver,int& direction,dimension& dimensionObject,doubl
     returnInit retour;
     retour.check=true;
     double x,y,sizeWidthMin;
+
     cout << "Start of initialization " << endl;
     do{
         cout << "Number of Receiver ?" << endl;
@@ -53,6 +54,8 @@ returnInit init(int& nbrReceiver,int& direction,dimension& dimensionObject,doubl
         cout << "Object direction ? [degree]  " << endl;
         cin >> direction;
     }while((direction>359)||(direction<0));
+
+    // Check if the width is large enough to cover all sensors
     sizeWidthMin=(distanceMaxReceiverLinearRelationVector (direction,retour.positionReceiver,nbrReceiver)*2);
     if (sizeWidthMin==0){
         cout << "Error"<< endl;
@@ -75,7 +78,6 @@ returnInit init(int& nbrReceiver,int& direction,dimension& dimensionObject,doubl
             cout << "length [cm] ?" << endl;
             cin >> dimensionObject.length;
         }while(dimensionObject.length<=0);
-
 
         cout << "End of initialization  " << endl;
     }
