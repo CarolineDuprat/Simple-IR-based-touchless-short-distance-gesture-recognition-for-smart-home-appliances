@@ -1,11 +1,24 @@
 /**
   * @file Initialization and verification of parameters
+  *
+  * The user must choose parameters : Number of receiver, spatial position of receivers, object moving direction,
+  * object moving speed, object size, initial object distance.
+  * To enter these parameters the user has two choices : User interaction in the console or the command line.
+  * The function to interact with the user is "init".
+  *
+  * Parameters have constraints: direction ( 0° to 359° ); Number of receiver > 0; large enough to cover all sensors; ...
+  * To verify that the width of the object is large enough; we will calculate the distance between receivers and direction.
+  * and verify that the size of the object is twice as large as this distance. Functions "linearRelation","distanceMaxReceiverLinearRelationTab",
+  * "distanceMaxReceiverLinearRelationVector" do these calculations.
+  * The other parameters are checked in the function "init" for interaction with the user, in the function "checkAllParameters" for the command line.
+  *
+  * The function "showParameters" displays all the parameters on the console
   */
 
 #include "initialization.h"
 using namespace std;
 /**
- * @brief init initialization of all parameters with User interaction in the console
+ * @brief init initialization and verification of all parameters with User interaction in the console
  * @param nbrReceiver Number of Receiver
  * @param direction Angular position of the obstacle[°]
  * @param dimensionObject dimension of the object [cm]
@@ -86,6 +99,7 @@ bool checkAllParameters (int const nbrReceiver,position_t positionReceiver[] ,in
     if ((angle<0)||(angle>359)||(dimensionObject.length<=0)||(speed<=0)||(distance<=0)||(distancemin==0)){
         check=false;
         cout << "Error Parameters" << endl;
+
     // Check if the width is large enough to cover all sensors
     }if (dimensionObject.width<distancemin*2){
         cout << "Error, sizeWidth > " << distancemin*2 << endl;
@@ -139,6 +153,8 @@ std::vector <double> linearRelation (int const direction)
 }
 /**
  * @brief distanceMaxReceiverLinearRelationTab Calculution of the maximum distance between the line and receivers (Positions of receivers are in a tab)
+ * To have information on the line formed by the direction, we must calculate the coefficients of the line, these calculations are carried out in the function "linearRelation".
+ * Then it calculates the distance between each receivers and this line. We return the greatest distance.
  * @param direction Angular position of the obstacle [°]
  * @param positionReceiver all positions of receiver [cm]
  * @param nbrReceiver number of Receiver
@@ -162,6 +178,7 @@ double distanceMaxReceiverLinearRelationTab (int const direction,position_t posi
                 //    distance = ------------------------
                 //                | sqrt ( A*A + B*B ) |
                 distance = fabs(((coefficient[0]*positionReceiver[compteur].x)+(coefficient[1]*positionReceiver[compteur].y))/sqrt(pow(coefficient[0],2)+pow(coefficient[1],2)));
+
                 // Maximum distance
                 if (distance > distanceMax){
                     distanceMax=distance;
@@ -173,6 +190,8 @@ double distanceMaxReceiverLinearRelationTab (int const direction,position_t posi
 }
 /**
  * @brief distanceMaxReceiverLinearRelationVector Calculution of the maximum distance between the line and receivers (Positions of receivers are in a vector)
+ * To have information on the line formed by the direction, we must calculate the coefficients of the line, these calculations are carried out in the function "linearRelation".
+ * Then it calculates the distance between each receivers and this line. We return the greatest distance.
  * @param direction Angular position of the obstacle [°]
  * @param positionReceiver all positions of receiver [cm]
  * @param nbrReceiver number of Receivers

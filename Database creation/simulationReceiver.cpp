@@ -8,7 +8,7 @@
 #include "simulationReceiver.h"
 using namespace std;
 /**
- * @brief simulationTime Calcul the total time of the simulation [ms]
+ * @brief simulationTime Calculation the total time of the simulation [ms]
  * The object must travel from (x,y) to (-x,-y). So the total distance is the initial distance * 2
  * We know also the speed of the object.
  * So we can know the total time of the simulation : t = (total distance ) / vitesse
@@ -29,7 +29,7 @@ int simulationTime (double const distance,double const speed){
     return time;
 }
 /**
- * @brief HorizontalAndVerticalSpeed Calcul the horizontal and vertical speed and the initial position of the object
+ * @brief HorizontalAndVerticalSpeed Calculation the horizontal and vertical speeds and the initial position of the object
  * Initial position : We know the distance of the object and the angular position of the object, so we can project this point to know its position in the orthormed frame
  * Horizontal and vertical speed : The calculation of these speeds makes it easier to know the position of the object at all times
  *                                 We know the total distance and the total time => vitesse = distance / time
@@ -105,7 +105,7 @@ position_t positionMoveObject (returnSpeedPos information ,unsigned int time){
  * @brief rotationCorner Center of the object (0,0), Obtained position of corners after rotation
  * To know the position of the corners of the rectangle, we will first assume that the rectangle
  * is aligned with the x and y axes, so it will be easy to calculate the position of the corners
- * with the dimension of the object. Then we will apply a rotation to these points (matrix rotation)
+ * with the dimension of the object. Then we will apply a rotation to these points (matrix rotation)to know the real position of the points at t = 0
  * @param dimensionObject dimension of the object [cm]
  * @param angle Angular position of the obstacle [°]
  * @return position of corners
@@ -145,7 +145,9 @@ std::vector<position_t> rotationCorner (dimension dimensionObject,int angle){
     return positionCornerRotation;
 }
 /**
- * @brief ReceiverCovered allows to know if the point is in a convex polygon. Calcul all the determinant, and check the result
+ * @brief ReceiverCovered allows to know if the point is in a convex polygon. The point will be inside a
+ * convex polygon if and only if it lies on the same side of the support line of each of the segments.
+ * Calcul all the determinant, and check the result
  * If all signs are the same => receiver is in the rectangle
  * @param positionObject position of the object [cm]
  * @param positionReceiver position of the receiver [cm]
