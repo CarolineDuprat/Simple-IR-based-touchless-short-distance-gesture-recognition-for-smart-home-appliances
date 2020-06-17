@@ -16,7 +16,7 @@ int main(int argc,char *argv[])
     bool check(true),inRectangle,write;
     std::vector<double> positionReceiverVector;
     std::vector<position_t> positionCornerRotation, positionCorner;
-    string filename,lien(" C:\"Users\"Caroline Duprat\"");
+    string filename; //,lien(" C:\"Users\"Caroline Duprat\"");
     returnSpeedPos infoSpeedPos;
     returnInit retourinit;
     position_t *positionReceiver = nullptr;
@@ -41,6 +41,7 @@ int main(int argc,char *argv[])
                 j=j+2;
             }
             // Create file name
+            filename = "_";
             filename += nameFile (nbrReceiver,positionReceiver,angle,distance,speed,dimensionObject);
         }
     } else {
@@ -106,11 +107,22 @@ int main(int argc,char *argv[])
         cout << "c3 : "<<positionCornerRotation[2].x << " , "<<positionCornerRotation[2].y << endl;
         cout << "c4 : "<<positionCornerRotation[3].x << " , "<<positionCornerRotation[3].y << endl;
 
+        cout << endl;
+        cout << endl;
+        cout << "object.x, object.y";
+        for (int i=0 ; i<4 ; i++){
+            cout << ", corner[" << i << "].x, corner[" << i << "].y";
+        }
+        for (int r=0 ; r<nbrReceiver ; r++){
+            cout << ", receiver[" << r << "].ID, inRect, time, valid";
+        }
+        cout << endl;
+
         for (int t=0;t< totalTime+1;t++){
 
             //Calcul the new position of the object after time=t
             positionObject=positionMoveObject (infoSpeedPos ,t);
-            cout << "Position of the object, x: "<< positionObject.x << " cm, y: " << positionObject.y<<" cm"<<endl;
+            cout << positionObject.x << ", " << positionObject.y;
 
             //Calcul the new position of corners
             positionCorner=ReelPositionCorner (positionObject,positionCornerRotation);
@@ -128,12 +140,13 @@ int main(int argc,char *argv[])
                     data[r].time=0;
                     data[r].valid=0;
                 }
-                cout << data[r].ID << " : " << inRectangle<<", time : "<<data[r].time<< ",valid : "<<data[r].valid<<endl;
+                cout << ", " << data[r].ID << ", " << inRectangle<<", " << data[r].time<< ", " << data[r].valid;
             }
+            cout << endl;
             //write data in the file
             write=writeFile (argv[0],filename,data,nbrReceiver);
             if (write==true){
-                cout << "The line has been added in the file" <<endl;
+                //cout << "The line has been added in the file" <<endl;
             }
         }
     }
