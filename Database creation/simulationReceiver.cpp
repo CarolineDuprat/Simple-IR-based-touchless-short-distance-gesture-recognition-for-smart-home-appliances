@@ -171,15 +171,20 @@ std::vector<position_t> ReelPositionCorner (position_t positionObject,std::vecto
 
     // The position of the object is not (0,0), it's (x,y)
     for (int i(0);i<4;i++){
-        positionCorner[0].x=positionCornerRotation[0].x + x;
-        positionCorner[0].y=positionCornerRotation[0].y + y;
+        positionCorner[i].x=positionCornerRotation[i].x + x;
+        positionCorner[i].y=positionCornerRotation[i].y + y;
     }
 
+#if 0
     cout << "Position Corner,( "<< positionObject.x<<" , "<<positionObject.y<<" ): Position of the center of the object  " << endl;
     for (int i(0);i<4;i++){
-        cout << "c1 : "<<positionCorner[i].x << " , "<<positionCorner[i].y << endl;
+        cout << "c" << i <<" : "<< positionCorner[i].x << " , "<< positionCorner[i].y << endl;
     }
-
+#endif
+    //cout << ", " << positionObject.x << ", " << positionObject.y;
+    for (int i=0 ; i<4 ; i++){
+        cout << ", " << positionCorner[i].x << ", " << positionCorner[i].y;
+    }
     return positionCorner;
 }
 /**
