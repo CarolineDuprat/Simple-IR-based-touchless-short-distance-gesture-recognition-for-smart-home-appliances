@@ -3,7 +3,7 @@
   *
   * For this, we will create a file whose name is created in the main for the command line and in the function nameFile for interaction with the user.
   * We will then add a row to this file per millisecond.
-  * The function "writeFile" allows  to add a row.
+  * The function "writeFile" allows to add a row.
   */
 
 #include "fileManagement.h"

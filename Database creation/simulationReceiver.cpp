@@ -1,8 +1,21 @@
 /**
   * @file This file simulates the process.
-  * Create a time in ms
-  * Calcul the position of the object as a function of time
-  * Determine if the object is in front of a receiver at an instant t (time)
+  * In this program, we want to move the object as a function of time and find out if the object is in front of receivers.
+  *
+  * We must create this time.For this, we will calculate the time necessary for the object to travel the distance with a speed v.
+  * The function "simulationTime" calculates this time.In the main, we will then create a for loop to move the object every ms.
+  *
+  * A receiver detects the object only if the object is in front of the receiver. We must therefore first know the position of the object
+  * as a function of time.For this, we will calculate the horizontal and vertical speed.
+  * Indeed, knowing the initial position of the object with the distance and the angle, we can calculate the new x and y coordinates
+  * by calculating the distance traveled at speed v during t ms.
+  * The functions "HorizontalAndVerticalSpeed" and "positionMoveObject" allow to calculate the position of the object.
+  *
+  * The object has a rectangle shape. So the object is in front of the receiver only if the position of the receiver is inside the rectangle.
+  * The point will be inside a convex polygon if and only if it lies on the same side of the support line of each of the segments.We will first
+  * calculate the position of the corners of the rectangle. We will then calculate the determinant to know the side of the point for each segments.
+  * We will perform this calculation for each receiver.
+  *
   */
 
 #include "simulationReceiver.h"

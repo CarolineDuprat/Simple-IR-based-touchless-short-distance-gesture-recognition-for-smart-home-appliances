@@ -8,6 +8,11 @@ using namespace std;
 
 // arguments : name.exe NumberOfReceiver x1[cm] y1[cm] x2[cm] y2[cm].... xN[cm] yN[cm] angle[°] distance[cm] speed[m/s] width[cm] length[cm]
 // 6 -6 5 -6 -2 0.5 3 -2.5 -2.5 4.5 -0.5 5.5 -4 +150 +10 +10 +11 +3
+/**
+ * @file The objective of the program is to simulate the data received by the receivers during the movement of an object and write this data
+ * to a file.For this code will be broken down into three parts: initialization of the parameters, simulation of the receivers, writing in a file.
+ * For the parameter initialization part, the user can either enter the parameters in the command line or interact with the console.
+ */
 
 int main(int argc,char *argv[])
 {
