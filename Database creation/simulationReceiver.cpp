@@ -181,7 +181,7 @@ std::vector<position_t> ReelPositionCorner (position_t positionObject,std::vecto
         cout << "c" << i <<" : "<< positionCorner[i].x << " , "<< positionCorner[i].y << endl;
     }
 #endif
-    cout << ", " << positionObject.x << ", " << positionObject.y;
+    //cout << ", " << positionObject.x << ", " << positionObject.y;
     for (int i=0 ; i<4 ; i++){
         cout << ", " << positionCorner[i].x << ", " << positionCorner[i].y;
     }
