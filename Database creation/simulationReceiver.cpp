@@ -170,11 +170,11 @@ std::vector<position_t> rotationCorner (dimension dimensionObject,int angle){
  */
 bool ReceiverCovered (position_t positionReceiver,std::vector<position_t> positionCorner){
     bool result(true);
-    int signFinal,sign;
+    int signFinal(0),sign(0);
 
     //Check the sign between det(C1C2,C1R) and det(C2C3,C2R)
-    signFinal= signdet (positionCorner[0],positionCorner[1],positionReceiver);
-    sign=signdet (positionCorner[1],positionCorner[2],positionReceiver);
+    signFinal = signdet (positionCorner[0],positionCorner[1],positionReceiver);
+    sign = signdet (positionCorner[1],positionCorner[2],positionReceiver);
     if (signFinal==0){
         signFinal= sign;
     }else if ((signFinal!= sign)&&(sign!=0)){
@@ -182,7 +182,7 @@ bool ReceiverCovered (position_t positionReceiver,std::vector<position_t> positi
     }
     //Check the sign between det(C1C2,C1R) and det(C3C4,C3R)
     if (result==true){
-        sign=signdet (positionCorner[2],positionCorner[3],positionReceiver);
+        sign = signdet (positionCorner[2],positionCorner[3],positionReceiver);
         if (signFinal==0){
             signFinal= sign;
         }else if ((signFinal!= sign)&&(sign!=0)){
@@ -190,7 +190,7 @@ bool ReceiverCovered (position_t positionReceiver,std::vector<position_t> positi
         }
     }
     //Check the sign between det(C1C2,C1R) and det(C4C1,C4R)
-    if (result==true){
+    if (result == true){
         sign=signdet (positionCorner[3],positionCorner[0],positionReceiver);
         if (signFinal==0){
             signFinal= sign;

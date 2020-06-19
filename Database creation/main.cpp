@@ -8,10 +8,14 @@ using namespace std;
 
 // arguments : name.exe NumberOfReceiver x1[cm] y1[cm] x2[cm] y2[cm].... xN[cm] yN[cm] angle[°] distance[cm] speed[m/s] width[cm] length[cm]
 // 6 -6 5 -6 -2 0.5 3 -2.5 -2.5 4.5 -0.5 5.5 -4 +150 +10 +10 +11 +3
+// 4 1 1 1 -1 -1 -1 -1 1 0 10 5 4 4 > results.csv
 /**
  * @file The objective of the program is to simulate the data received by the receivers during the movement of an object and write this data
  * to a file.For this code will be broken down into three parts: initialization of the parameters, simulation of the receivers, writing in a file.
- * For the parameter initialization part, the user can either enter the parameters in the command line or interact with the console.
+ * For the parameter initialization part, the user can either enter the parameters in the command line or interact with the console (initialization).
+ * As a function of time, we will have to calculate the displacement that the object has made and then see if the object is in front of one or more
+ * receivers. ( sumulationReceiver )
+ * Then, we add a line in the file with the states of the receivers. ( fileManagement )
  */
 
 int main(int argc,char *argv[])
@@ -126,16 +130,26 @@ int main(int argc,char *argv[])
         for (int t=0;t< totalTime+1;t++){
 
             //Calcul the new position of the object after time=t
+
             positionObject=positionMoveObject (infoSpeedPos ,t);
             cout << positionObject.x << ", " << positionObject.y;
 
             //Calcul the new position of corners
+
             positionCorner=ReelPositionCorner (positionObject,positionCornerRotation);
 
             for (int r=0;r<nbrReceiver;r++){
 
                 //Check if the receiver is in the object
+
                 inRectangle=ReceiverCovered (positionReceiver[r],positionCorner);
+
+                // If inrectangle==1 => the object is in front a receiver
+                // We must keep in memory the first time that the object is in front of the receiver, so we must check the
+                // valid state on the front turn.
+
+                // Write information in the line that will be added to the file
+
                 if ((inRectangle==1)&&(data[r].valid==0)){
                     data[r].time=t;
                     data[r].valid=1;
@@ -148,7 +162,9 @@ int main(int argc,char *argv[])
                 cout << ", " << data[r].ID << ", " << inRectangle<<", " << data[r].time<< ", " << data[r].valid;
             }
             cout << endl;
+
             //write data in the file
+
             write=writeFile (argv[0],filename,data,nbrReceiver);
             if (write==true){
                 //cout << "The line has been added in the file" <<endl;
