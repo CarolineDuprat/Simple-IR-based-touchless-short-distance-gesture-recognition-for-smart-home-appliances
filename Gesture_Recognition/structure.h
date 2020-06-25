@@ -5,25 +5,31 @@
 #include <stdio.h>
 
 
-#define NBRRECEIVERS 4
+#define MAX_RECEIVERS 6
 
-#define SIZE_MAX_CHARACTER NBRRECEIVERS*20
+//Maximum number of characters per line
+#define SIZE_MAX_CHARACTER MAX_RECEIVERS*20
 
+#define MAX_TIME_MS 1000
 
 typedef unsigned char uint8_t;
 typedef unsigned int uint16_t;
 typedef unsigned long uint64_t;
 
 typedef struct {
-    uint8_t id;
+    uint16_t id;
     uint16_t valid;
-    uint64_t time;
+    uint16_t time;
 } receiver_info_t;
 
 typedef struct {
-    unsigned int nReceivers;
-    receiver_info_t receivers[NBRRECEIVERS];
+    receiver_info_t receivers[MAX_RECEIVERS];
 } allreceivers_info_t;
 
+typedef struct {
+    uint16_t numberReceivers;
+    uint16_t timeSimulationTotal;
+    allreceivers_info_t t [MAX_TIME_MS];
+} allreceivers_info;
 
 #endif // STRUCTURE_H
