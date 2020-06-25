@@ -83,9 +83,9 @@ allreceivers_info translateInfoFromFile (char *lien){
                 //read its ID, time and valid
                 fscanf(file,"0x%d %d %d ",&iD,&time,&valid);
                 //add this information in the struct receivers
-                receivers.t[counter].receivers->id=iD;
-                receivers.t[counter].receivers->time=time;
-                receivers.t[counter].receivers->valid=valid;
+                receivers.t[counter].receivers[i].id=iD;
+                receivers.t[counter].receivers[i].time=time;
+                receivers.t[counter].receivers[i].valid=valid;
                 printf("ID = %d\n",iD);
                 printf("time = %d\n",time);
                 printf("valid = %d\n",valid);
@@ -103,4 +103,47 @@ allreceivers_info translateInfoFromFile (char *lien){
     }
 
     return receivers;
+}
+/**
+ * @brief checkFunction The function allows to create a file with the data you just recovered. This makes it possible to verify that the function
+ * "translateInfoFromFile" works correctly.
+ * @param receivers all information of the simulation: id, time, valid for each receiver for each time
+ * @return 1 : the file is create; else 0
+ */
+uint8_t checkFunction (allreceivers_info receivers){
+    uint8_t retour=0;
+    FILE* file = NULL;
+    char chaine[20]="",line[SIZE_MAX_CHARACTER]="";
+
+    //lecture et écriture, avec suppression du contenu au préalable.
+    file = fopen("verification.txt", "w+");
+    if (file != NULL)
+    {
+        //for each line in the file
+        for (uint16_t counter=0;counter<receivers.timeSimulationTotal;counter++){
+            //for each receiver
+            for (uint16_t i=0;i<receivers.numberReceivers;i++){
+                // the function "sprintf" allows to write in a chain
+                sprintf(chaine, "0x%d %d %d ", receivers.t[counter].receivers[i].id,receivers.t[counter].receivers[i].time,receivers.t[counter].receivers[i].valid );
+                // We concatenate chaine into line
+                strcat(line, chaine);
+                //delete the elements in the chaine
+                chaine[0] = '\0';
+            }
+            // We concatenate "\n" into line
+            strcat(line, "\n");
+            //addition of characters in the text
+            fputs(line, file);
+            //delete the elements in the line
+            line[0]='\0';
+        }
+        //file closing
+        fclose(file);
+        retour=1;
+    }
+    else
+    {
+        printf("Impossible to open the file");
+    }
+    return retour;
 }
