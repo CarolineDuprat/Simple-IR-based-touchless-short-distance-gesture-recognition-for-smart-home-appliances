@@ -27,8 +27,9 @@ bool writeFile (string lien , string nameFile,rec data[],int nbrID)
     if(monFlux)
     {
         for (int compteur(0) ; compteur < nbrID ; compteur++){
-            monFlux << "0x" << std::hex << data[compteur].ID << std::dec << ", " << data [compteur].time << ", " <<  std::dec << data [compteur].valid << ", ";
+            monFlux << "0x" << std::hex << data[compteur].ID << std::dec << ' ' << data [compteur].time << ' ' <<  std::dec << data [compteur].valid << ' ';
         }
+
         monFlux << endl;
         retour=true;
     }
