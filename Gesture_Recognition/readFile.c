@@ -110,8 +110,7 @@ allreceivers_info translateInfoFromFile (char *lien){
  * @param receivers all information of the simulation: id, time, valid for each receiver for each time
  * @return 1 : the file is create; else 0
  */
-uint8_t checkFunction (allreceivers_info receivers){
-    uint8_t retour=0;
+void checkFunction (allreceivers_info receivers){
     FILE* file = NULL;
     char chaine[20]="",line[SIZE_MAX_CHARACTER]="";
 
@@ -139,11 +138,9 @@ uint8_t checkFunction (allreceivers_info receivers){
         }
         //file closing
         fclose(file);
-        retour=1;
     }
     else
     {
         printf("Impossible to open the file");
     }
-    return retour;
 }

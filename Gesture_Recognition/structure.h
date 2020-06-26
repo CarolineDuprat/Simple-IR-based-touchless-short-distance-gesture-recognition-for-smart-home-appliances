@@ -33,4 +33,16 @@ typedef struct {
     allreceivers_info_t t [MAX_TIME_MS];
 } allreceivers_info;
 
+
+
+typedef struct {
+    uint16_t nreceivers;
+    uint8_t receivers[MAX_RECEIVERS];
+} snapshot_t;
+
+typedef struct {
+    uint16_t numberSnapshot;
+    uint8_t snapshot_t[MAX_TIME_MS];
+} snapshot;
+
 #endif // STRUCTURE_H

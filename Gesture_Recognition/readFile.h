@@ -5,6 +5,6 @@
 uint16_t numberOfLines (FILE* file);
 uint16_t numberReceiver (char chaine[SIZE_MAX_CHARACTER]);
 allreceivers_info translateInfoFromFile (char *lien);
-uint8_t checkFunction (allreceivers_info receivers);
+void checkFunction (allreceivers_info receivers);
 
 #endif // READFILE_H
