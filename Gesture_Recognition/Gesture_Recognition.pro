@@ -6,9 +6,11 @@ CONFIG -= qt
 SOURCES += \
         main.c \
         readFile.c \
-        snapshot.c
+        snapshot.c \
+        snapshotAnalysis.c
 
 HEADERS += \
     readFile.h \
     snapshot.h \
+    snapshotAnalysis.h \
     structure.h
