@@ -8,15 +8,19 @@
 int main()
 {
     allreceivers_info receivers;
+    snapshot snapshotReceivers;
 
     //Link of the file to study
     char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_310_10_5_4_4_.txt";
 
+    //translate the information from the file to receivers
     receivers=translateInfoFromFile (lien);
 
-    //checkFunction (receivers);
+    //Creation of a file with data from receivers
+    checkFunction (receivers);
 
-    snapshotCreation (receivers);
+    //Creation of the snapshot list
+    snapshotReceivers=snapshotCreation (receivers);
 
     return 0;
 }

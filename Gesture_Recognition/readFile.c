@@ -2,8 +2,9 @@
 /**
   * @file In this first part, we will translate the information from the file
   * We will open the file, count the number of lines and the number of receiver.
-  * Then we will read each line. We will recover for each receiver ID, time, valid. We will put this information in a table of allreceivers_info.
+  * Then we will read each line. We will recover for each receiver : ID, time, valid. We will put this information in a table of allreceivers_info.
   * We will close the file.
+  * To verify that the data has been recovered correctly, we will create a file from the data. And manually verify that these two files are the same.
   */
 
 /**
@@ -17,6 +18,7 @@ uint16_t numberOfLines (FILE* file){
     uint16_t numberLines = 0;
 
     //As long as the character read is not equal to EOF, EOF means either that we are at the end of the file, or that there is an error
+    //This command allows to read the entire file
     while((character=fgetc(file)) != EOF)
     {
         // '\n' :Line break
@@ -32,7 +34,7 @@ uint16_t numberOfLines (FILE* file){
     return numberLines;
 }
 /**
- * @brief numberReceiver This function allows you to count the number of receivers.
+ * @brief numberReceiver This function allows to count the number of receivers.
  * Each receiver is characterized by its ID which is displayed in hex, it is therefore in the form: 0x.
  * We will count the number of occurrences in a line of 'x' to know the number of receptors.
  * @param line file line
@@ -52,7 +54,7 @@ uint16_t numberReceiver (char line[SIZE_MAX_CHARACTER]){
     return nbReceiver;
 }
 /**
- * @brief translateInfoFromFile This function allows you to read the information in the file and put it in the struct allreceivers_info.
+ * @brief translateInfoFromFile This function allows to read the information in the file and put it in the struct allreceivers_info.
  * @param lien Link of the file to study
  * @return all information of the simulation: id, time, valid for each receiver for each time
  */
@@ -114,8 +116,10 @@ void checkFunction (allreceivers_info receivers){
     FILE* file = NULL;
     char chaine[20]="",line[SIZE_MAX_CHARACTER]="";
 
-    //lecture et écriture, avec suppression du contenu au préalable.
+    //Read and write, before deleting content.
     file = fopen("verification.txt", "w+");
+
+    //If the file is open
     if (file != NULL)
     {
         //for each line in the file

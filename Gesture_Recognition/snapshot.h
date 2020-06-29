@@ -4,6 +4,12 @@
 
 uint8_t detectionStartOfSequence (allreceivers_info_t receivers,uint16_t numberReceivers);
 
-void snapshotCreation (allreceivers_info receivers);
+snapshot snapshotCreation (allreceivers_info receivers);
+
+snapshot_t snapshotCreation_t (allreceivers_info_t receivers,uint16_t numberReceivers);
+
+uint8_t equal (snapshot_t snapshotReceivers_t,snapshot_t lastsnapshot);
+
+void display(snapshot snapshotReceivers);
 
 #endif // SNAPSHOT_H
