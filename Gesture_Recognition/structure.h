@@ -38,6 +38,7 @@ typedef struct {
 typedef struct {
     uint16_t nreceivers;
     uint16_t receivers[MAX_RECEIVERS];
+    uint16_t time[MAX_RECEIVERS];
 } snapshot_t;
 
 typedef struct {

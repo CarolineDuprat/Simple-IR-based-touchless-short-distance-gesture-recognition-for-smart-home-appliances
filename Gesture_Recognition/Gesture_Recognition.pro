@@ -10,6 +10,7 @@ SOURCES += \
         snapshotAnalysis.c
 
 HEADERS += \
+    all_snapshots.h \
     readFile.h \
     snapshot.h \
     snapshotAnalysis.h \

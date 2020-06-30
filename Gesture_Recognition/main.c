@@ -26,8 +26,8 @@ int main()
 
     //Creation of the snapshot list
     snapshotReceivers=snapshotCreation (receivers);
+    display(snapshotReceivers);
 
-    (void)snapshotReceivers;
 
     return 0;
 }

@@ -49,12 +49,64 @@ snapshot_t snapshotCreation_t (allreceivers_info_t receivers,uint16_t numberRece
         if (receivers.receivers[i].valid==1){
             //Add its id in the snapshot
             snapshotReceivers_t.receivers[snapshotReceivers_t.nreceivers]=receivers.receivers[i].id;
+            snapshotReceivers_t.time[snapshotReceivers_t.nreceivers]=receivers.receivers[i].time;
             printf("id = %d\n",receivers.receivers[i].id);
             //the number of receivers in the snapshot increases by 1
             snapshotReceivers_t.nreceivers++;
         }
     }
+    //Combined Receiver
+    snapshotReceivers_t=combinedReceivers(snapshotReceivers_t);
+
     return snapshotReceivers_t;
+}
+/**
+ * @brief combinedReceivers This function allows to group receivers when they are at the same time in front of the object
+ * @param snapshotReceivers_t
+ * @return snapshot with receivers combined
+ */
+snapshot_t combinedReceivers(snapshot_t snapshotReceivers_t){
+    snapshot_t snapshotCombined_t;
+    snapshotCombined_t.nreceivers=0;
+    uint16_t time=0,somme=0;
+    //For each receiver
+    for (uint16_t i=0;i<snapshotReceivers_t.nreceivers;i++){
+        time=snapshotReceivers_t.time[i];
+        somme=0;
+        //For each receiver
+        for (uint16_t t=0;t<snapshotReceivers_t.nreceivers;t++){
+            if (time==snapshotReceivers_t.time[t]){
+                somme=somme+snapshotReceivers_t.receivers[t];
+            }
+        }
+        if (snapshotCombined_t.nreceivers==0){
+            snapshotCombined_t.receivers[0]=somme;
+            snapshotCombined_t.nreceivers++;
+        }else{
+            if (valeurInTab (snapshotCombined_t.nreceivers,snapshotCombined_t.receivers,somme)==0){
+                snapshotCombined_t.receivers[snapshotCombined_t.nreceivers]=somme;
+                snapshotCombined_t.nreceivers++;
+            }
+        }
+    }
+    return snapshotCombined_t;
+}
+/**
+ * @brief valeurInTab The function allows to know if an element is in an array
+ * @param newNbrReceivers  number of elements in the array
+ * @param newIDReceivers array
+ * @param somme element
+ * @return 1 : element is in the tab, else 0
+ */
+uint8_t valeurInTab ( uint16_t newNbrReceivers, uint16_t newIDReceivers[],uint16_t somme){
+    uint8_t test=0;
+    // For each element in the array
+    for(uint16_t t=0;t<newNbrReceivers;t++){
+        if (somme==newIDReceivers[t]){
+            test=1;
+        }
+    }
+    return test;
 }
 /**
  * @brief equal The function allows to know if two elements of the type snapshot_t are equal.
@@ -113,17 +165,15 @@ snapshot snapshotCreation (allreceivers_info receivers){
         }
     }
 
-    printf("number of snapshot = %d\n",snapshotReceivers.numberSnapshot);
-
-    display(snapshotReceivers);
-
     return snapshotReceivers;
 }
+
 /**
  * @brief display The function allows to display all the elements of snapshotReceivers
  * @param snapshotReceivers different snapshots that represent the movement of the object
  */
 void display(snapshot snapshotReceivers){
+    printf("number of snapshot = %d\n",snapshotReceivers.numberSnapshot);
     // For each snapshot
     for (uint16_t s=0;s<snapshotReceivers.numberSnapshot;s++){
         printf("snapshot %d\n",s);
