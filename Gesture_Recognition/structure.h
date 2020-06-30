@@ -1,6 +1,5 @@
 #ifndef STRUCTURE_H
 #define STRUCTURE_H
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -17,6 +16,8 @@ typedef unsigned char uint8_t;
 typedef unsigned int uint16_t;
 typedef unsigned long uint64_t;
 
+
+/* Receivers */
 typedef struct {
     uint16_t id;
     uint16_t valid;
@@ -34,12 +35,17 @@ typedef struct {
 } allreceivers_info;
 
 
+/* Snapshot */
+typedef struct {
+    uint16_t nreceivers;
+    uint16_t receivers[MAX_RECEIVERS];
+} snapshot_t;
 
 typedef struct {
     uint16_t nreceivers;
     uint16_t receivers[MAX_RECEIVERS];
     uint16_t time[MAX_RECEIVERS];
-} snapshot_t;
+} snapshot_t_time;
 
 typedef struct {
     uint16_t numberSnapshot;

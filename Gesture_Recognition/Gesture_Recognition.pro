@@ -10,7 +10,8 @@ SOURCES += \
         snapshotAnalysis.c
 
 HEADERS += \
-    all_snapshots.h \
+    gesture.h \
+    gesture.h \
     readFile.h \
     snapshot.h \
     snapshotAnalysis.h \

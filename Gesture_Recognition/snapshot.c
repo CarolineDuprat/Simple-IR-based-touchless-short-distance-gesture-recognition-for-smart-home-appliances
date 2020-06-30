@@ -40,7 +40,8 @@ uint8_t detectionStartOfSequence (allreceivers_info_t receivers,uint16_t numberR
  * @return snapshot at time t
  */
 snapshot_t snapshotCreation_t (allreceivers_info_t receivers,uint16_t numberReceivers){
-    snapshot_t snapshotReceivers_t;
+    snapshot_t_time snapshotReceivers_t;
+    snapshot_t snapshotReceivers;
     snapshotReceivers_t.nreceivers=0;
 
     //For each receiver
@@ -56,16 +57,16 @@ snapshot_t snapshotCreation_t (allreceivers_info_t receivers,uint16_t numberRece
         }
     }
     //Combined Receiver
-    snapshotReceivers_t=combinedReceivers(snapshotReceivers_t);
+    snapshotReceivers=combinedReceivers(snapshotReceivers_t);
 
-    return snapshotReceivers_t;
+    return snapshotReceivers;
 }
 /**
  * @brief combinedReceivers This function allows to group receivers when they are at the same time in front of the object
  * @param snapshotReceivers_t
  * @return snapshot with receivers combined
  */
-snapshot_t combinedReceivers(snapshot_t snapshotReceivers_t){
+snapshot_t combinedReceivers(snapshot_t_time snapshotReceivers_t){
     snapshot_t snapshotCombined_t;
     snapshotCombined_t.nreceivers=0;
     uint16_t time=0,somme=0;
