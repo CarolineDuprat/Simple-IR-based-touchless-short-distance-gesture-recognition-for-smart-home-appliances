@@ -15,5 +15,4 @@ void display(snapshot snapshotReceivers);
 uint8_t valeurInTab ( uint16_t newNbrReceivers, uint16_t newIDReceivers[],uint16_t somme);
 
 snapshot_t combinedReceivers(snapshot_t_time snapshotReceivers_t);
-
 #endif // SNAPSHOT_H

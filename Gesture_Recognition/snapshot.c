@@ -31,7 +31,6 @@ uint8_t detectionStartOfSequence (allreceivers_info_t receivers,uint16_t numberR
     return start;
 }
 
-
 /**
  * @brief snapshotCreation_t Creation of a snapshot. Read the receiver states, if the receiver is in front of the object (valid == 1),
  * add its id to the snapshot.
@@ -61,6 +60,7 @@ snapshot_t snapshotCreation_t (allreceivers_info_t receivers,uint16_t numberRece
 
     return snapshotReceivers;
 }
+
 /**
  * @brief combinedReceivers This function allows to group receivers when they are at the same time in front of the object
  * @param snapshotReceivers_t
