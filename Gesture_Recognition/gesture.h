@@ -1,6 +1,7 @@
 #ifndef GESTURE_H
 #define GESTURE_H
 #include "structure.h"
+
 /* This table defines the possible, valid snapshots given the number ofreceivers and shape.This example is for 4 receivers in a rectangle shape.
  * Assume we can combine receivers vertically, horizontally, or diagonally,but L-shapes are considered illegal. */
 const snapshot_t all_snapshots[] = {
@@ -86,7 +87,7 @@ const snapshot_t all_snapshots[] = {
     {0, {0x00}}, /* 54 */
 };
 
-/* Gesture */
+/* Gesture*/
 // T = TOP, B = BOTTOM, L = LEFT, R = RIGHT
 #define GESTURE_TB 0x01 /* Vertical top to bottom */
 #define GESTURE_BT 0x02 /* Vertical bottom to top */
@@ -103,7 +104,7 @@ typedef struct {
     unsigned int snapshotID;
     uint16_t gestureID;
 } transitions_t;
-
+/*
 const int transitions_rows[] = {
     // Transitions exiting from snaphost entry [0] in all_snapshots (snapshot {1, {0x00}}) use the entries [0] to [y-1] in the pool
     // y is the number of valid transitions exiting from this snapshot:
@@ -1053,5 +1054,5 @@ const transitions_t transitions_pool = {
 
 
 };
-
+*/
 #endif // GESTURE_H

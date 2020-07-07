@@ -62,14 +62,30 @@ snapshot_t snapshotCreation_t (allreceivers_info_t receivers,uint16_t numberRece
 }
 
 /**
- * @brief combinedReceivers This function allows to group receivers when they are at the same time in front of the object
+ * @brief combinedReceivers This function allows to group receivers when they are at the same time in front of the object,
+ * the function also sort the id by time (sort by selection)
  * @param snapshotReceivers_t
  * @return snapshot with receivers combined
  */
 snapshot_t combinedReceivers(snapshot_t_time snapshotReceivers_t){
     snapshot_t snapshotCombined_t;
     snapshotCombined_t.nreceivers=0;
-    uint16_t time=0,somme=0;
+    uint16_t time=0,somme=0,copyTime=0,copyID=0;
+    //Sort ID by time
+    if (snapshotReceivers_t.nreceivers>1){
+        for (uint16_t z=0;z<snapshotReceivers_t.nreceivers-1;z++){
+            for (uint16_t y=z+1;y<snapshotReceivers_t.nreceivers;y++){
+                if(snapshotReceivers_t.time[z]>snapshotReceivers_t.time[y]){
+                    copyTime=snapshotReceivers_t.time[z];
+                    copyID=snapshotReceivers_t.receivers[z];
+                    snapshotReceivers_t.time[z]=snapshotReceivers_t.time[y];
+                    snapshotReceivers_t.receivers[z]=snapshotReceivers_t.receivers[y];
+                    snapshotReceivers_t.time[y]=copyTime;
+                    snapshotReceivers_t.receivers[y]=copyID;
+                }
+            }
+        }
+    }
     //For each receiver
     for (uint16_t i=0;i<snapshotReceivers_t.nreceivers;i++){
         time=snapshotReceivers_t.time[i];
