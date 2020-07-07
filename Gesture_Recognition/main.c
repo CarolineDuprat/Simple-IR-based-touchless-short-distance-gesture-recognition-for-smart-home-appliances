@@ -18,7 +18,7 @@ int main()
     //uint16_t position;
 
     //Link of the file to study
-    char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_180_10_5_4_4_.txt";
+    char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_310_10_5_4_4_.txt";
 
     //translate the information from the file to receivers
     receivers=translateInfoFromFile (lien);
