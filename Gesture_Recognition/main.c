@@ -3,7 +3,7 @@
 #include "structure.h"
 #include "readFile.h"
 #include "snapshot.h"
-//#include "snapshotAnalysis.h"
+#include "snapshotAnalysis.h"
 
 /**
  * @file The objective of this program is to determine the movement performed by the object from a data file of the receivers.

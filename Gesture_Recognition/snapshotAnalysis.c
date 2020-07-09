@@ -24,9 +24,7 @@ uint16_t snapshotResearch (const snapshot_t snapshot){
         }
         counter++;
     }while((position==100)||(counter!=55));
-    for (uint16_t i=0;i<54;i++){
 
-    }
     return position;
 }
 
