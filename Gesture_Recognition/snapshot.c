@@ -10,6 +10,95 @@
   */
 
 
+/* This table defines the possible, valid snapshots given the number ofreceivers and shape.This example is for 4 receivers in a rectangle shape.
+ * Assume we can combine receivers vertically, horizontally, or diagonally,but L-shapes are considered illegal. */
+const snapshot_t all_snapshots[] = {
+    /* There are no valid snapshots of 4 receivers */
+    /* Mark the end of the table with this special snapshot(0 receivers, receiver ID 0x00) */
+    {0, {0x00}}, /* 0 */
+    /* Single individual receivers */
+    {1, {0x01}}, /* 1 */
+    {1, {0x02}}, /* 2 */
+    {1, {0x04}}, /* 3 */
+    {1, {0x08}}, /* 4 */
+    /* Single combined receivers */
+    {1, {0x03}}, /* 5 */
+    {1, {0x05}}, /* 6 */
+    {1, {0x06}}, /* 7 */
+    {1, {0x09}}, /* 8 */
+    {1, {0x0A}}, /* 9 */
+    {1, {0x0C}}, /* 10 */
+    /* Two receivers; receiver 0x01 and a second one. */
+    /* Impossible combinations: 0x01 followed by 0x9, 0x3, 0x5 */
+    {2, {0x01, 0x02}}, /* 11 */
+    {2, {0x01, 0x04}}, /* 12 */
+    {2, {0x01, 0x08}}, /* 13 */
+    {2, {0x01, 0x06}}, /* 14 */
+    {2, {0x01, 0x0A}}, /* 15 */
+    {2, {0x01, 0x0C}}, /* 16 */
+    /* Two receivers; receiver 0x02 and a second one. */
+    /* Impossible combinations: 0x02 followed by 0x3, 0x6, 0xA */
+    {2, {0x02, 0x01}}, /* 17 */
+    {2, {0x02, 0x04}}, /* 18 */
+    {2, {0x02, 0x08}}, /* 19 */
+    {2, {0x02, 0x05}}, /* 20 */
+    {2, {0x02, 0x09}}, /* 21 */
+    {2, {0x02, 0x0C}}, /* 22 */
+    /* Two receivers; receiver 0x04 and a second one. */
+    /* Impossible combinations: 0x04 followed by 0x5, 0x6, 0xC */
+    {2, {0x04, 0x01}}, /* 23 */
+    {2, {0x04, 0x02}}, /* 24 */
+    {2, {0x04, 0x08}}, /* 25 */
+    {2, {0x04, 0x03}}, /* 26 */
+    {2, {0x04, 0x09}}, /* 27 */
+    {2, {0x04, 0x0A}}, /* 28 */
+    /* Two receivers; receiver 0x08 and a second one. */
+    /* Impossible combinations: 0x08 followed by 0x9, 0xA, 0xC */
+    {2, {0x08, 0x01}}, /* 29 */
+    {2, {0x08, 0x02}}, /* 30 */
+    {2, {0x08, 0x04}}, /* 31 */
+    {2, {0x08, 0x03}}, /* 32 */
+    {2, {0x08, 0x05}}, /* 33 */
+    {2, {0x08, 0x06}}, /* 34 */
+    /* Two receivers; receiver 0x03 and a second one. */
+    /* Possible combinations: 0x03 followed by 0x4, 0x8, or 0xC */
+    {2, {0x03, 0x04}}, /* 35 */
+    {2, {0x03, 0x08}}, /* 36 */
+    {2, {0x03, 0x0C}}, /* 37 */
+    /* Two receivers; receiver 0x05 and a second one. */
+    /* Possible combinations: 0x05 followed by 0x2 or 0x8 */
+    {2, {0x05, 0x02}}, /* 38 */
+    {2, {0x05, 0x08}}, /* 39 */
+    /* Two receivers; receiver 0x06 and a second one. */
+    /* Possible combinations: 0x06 followed by 0x1, 0x8, or 0x9 */
+    {2, {0x06, 0x01}}, /* 40 */
+    {2, {0x06, 0x08}}, /* 41 */
+    {2, {0x06, 0x09}}, /* 42 */
+    /* Two receivers; receiver 0x09 and a second one. */
+    /* Possible combinations: 0x09 followed by 0x2, 0x4, or 0x6 */
+    {2, {0x09, 0x02}}, /* 43 */
+    {2, {0x09, 0x04}}, /* 44 */
+    {2, {0x09, 0x06}}, /* 45 */
+    /* Two receivers; receiver 0x0A and a second one. */
+    /* Possible combinations: 0x0A followed by 0x1 or 0x4 */
+    {2, {0x0A, 0x01}}, /* 46 */
+    {2, {0x0A, 0x04}}, /* 47 */
+    /* Two receivers; receiver 0x0C and a second one. */
+    /* Possible combinations: 0x0C followed by 0x1, 0x2, or 0x3 */
+    {2, {0x0C, 0x01}}, /* 48 */
+    {2, {0x0C, 0x02}}, /* 49 */
+    {2, {0x0C, 0x03}}, /* 50 */
+    /* Three receivers: Let's assume an L-shape is illegal, so the onlyvalid combinations of 3 receivers are diagonal:receiver, two receivers combined, and receiver */
+    {3, {0x01, 0x0A, 0x04}}, /* 51 */
+    {3, {0x02, 0x05, 0x08}}, /* 52 */
+    {3, {0x04, 0x0A ,0x01}}, /* 53 */
+    {3, {0x08, 0x05, 0x02}}, /* 54 */
+};
+
+const snapshot_t * get_all_snapshots(void) {
+    return all_snapshots;
+}
+
 
 /**
  * @brief detectionStartOfSequence The function allows to determine if the object is in front of one or more receivers.
@@ -133,15 +222,20 @@ uint8_t valeurInTab ( uint16_t newNbrReceivers, uint16_t newIDReceivers[],uint16
  * @return 1 : The two elements are equal, else 0
  */
 uint8_t equal (snapshot_t snapshotReceivers_t,snapshot_t lastsnapshot){
-    uint8_t equal=0;
+    uint8_t equal=0,counter=0;
     // if the two snapshots have the same number of receivers
     if (lastsnapshot.nreceivers==snapshotReceivers_t.nreceivers){
         // For each receiver
         for(uint8_t i=0;i<lastsnapshot.nreceivers;i++){
             //Verify that these are the same ids
+
             if(lastsnapshot.receivers[i]==snapshotReceivers_t.receivers[i]){
-                equal=1;
+                counter++;
             }
+        }
+        //if all the snapshots are the same counter = lastsnapshot.nreceivers
+        if (counter==lastsnapshot.nreceivers){
+            equal=1;
         }
     }
     return equal;
@@ -168,7 +262,7 @@ snapshot snapshotCreation (allreceivers_info receivers){
     time++;
 
     //For each ms
-    for (time;time<receivers.timeSimulationTotal;time++){
+    for (/*time*/;time<receivers.timeSimulationTotal;time++){
         printf("time = %d\n",time);
 
         //Calculate the snapshot at the time t = time

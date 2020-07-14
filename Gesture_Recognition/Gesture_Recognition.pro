@@ -4,6 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        gesture.c \
         main.c \
         readFile.c \
         snapshot.c \

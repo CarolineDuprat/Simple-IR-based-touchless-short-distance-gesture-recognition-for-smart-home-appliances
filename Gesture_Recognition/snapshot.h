@@ -2,6 +2,8 @@
 #define SNAPSHOT_H
 #include "structure.h"
 
+const snapshot_t *get_all_snapshots(void);
+
 uint8_t detectionStartOfSequence (allreceivers_info_t receivers,uint16_t numberReceivers);
 
 snapshot snapshotCreation (allreceivers_info receivers);

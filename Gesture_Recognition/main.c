@@ -15,7 +15,7 @@ int main()
 {
     allreceivers_info receivers;
     snapshot snapshotReceivers;
-    //uint16_t position;
+    uint16_t gesture=0;
 
     //Link of the file to study
     char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_310_10_5_4_4_.txt";
@@ -29,8 +29,14 @@ int main()
     //Creation of the snapshot list
     snapshotReceivers=snapshotCreation (receivers);
     display(snapshotReceivers);
-    //position=snapshotResearch (snapshotReceivers.t[0]);
+    //position=snapshotEqualAll_snapshots (snapshotReceivers.t[1],19);
+    //printf("0 : No, 1 : Yes = %d\n",position);
+    //position=snapshotResearchFirstAll_snapshots(snapshotReceivers.t[4]);
     //printf("position = %d\n",position);
-
+    //position=snapshotResearchTransitions_pool (snapshotReceivers.t[3],52);
+    //printf("position = %d\n",position);
+    gesture=snapshotsGesture (snapshotReceivers);
+    printf("gesture = %d\n",gesture);
+    nameGesture (gesture);
     return 0;
 }
