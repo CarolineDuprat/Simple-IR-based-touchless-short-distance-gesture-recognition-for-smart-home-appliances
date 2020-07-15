@@ -16,7 +16,7 @@ const uint16_t transitions_rows[] = {
     // y is the number of valid transitions exiting from this snapshot...
     // And so on...
     18,23,28,33,41,46,51,59,64,70,76,82,86,92,96,102,108,114,120,124,128,134,140,146,150,154,160,166,172,178,182,188,192,196,200,
-    206,212,218,221,225,231,235,239,245,251,257,261,265,271,277,283,289,295,
+    206,212,218,221,225,231,235,239,245,251,257,261,265,271,277,283,290,296,
 
 };
 
@@ -37,7 +37,7 @@ const transitions_t transitions_pool[] = {
     // Transitions from all_snapshots[0] to all_snapshots[3] ({1,{0x00}} to {1,{0x04}}) belong to GESTURE_BT | GESTURE_LR | GESTURE_BLTR
     {3, GESTURE_BT | GESTURE_LR | GESTURE_BLTR},
     // Transitions from all_snapshots[0] to all_snapshots[4] ({1,{0x00}} to {1,{0x08}}) belong to GESTURE_TB | GESTURE_LR | GESTURE_TLBR
-    {4, GESTURE_BT | GESTURE_LR | GESTURE_BLTR},
+    {4, GESTURE_TB | GESTURE_LR | GESTURE_TLBR},
     // Transitions from all_snapshots[0] to all_snapshots[5] ({1,{0x00}} to {1,{0x03}}) belong to GESTURE_RL
     {5, GESTURE_RL},
     // Transitions from all_snapshots[0] to all_snapshots[7] ({1,{0x00}} to {1,{0x06}}) belong to GESTURE_BT
@@ -914,25 +914,27 @@ const transitions_t transitions_pool[] = {
     // <<<<<<<
 
     // Valid transitions from snapshot {3, {0x04, 0x0A, 0x01}},     (entry [53] in all_snapshots array) begin here:
-    // >>>>>>> entries [283] to [288]
+    // >>>>>>> entries [283] to [289]
 
-    // Transitions from {3, {0x01, 0x0A, 0x04}} to {2, {0x01, 0x0A}}, index 15 in all_snapshots) belong to GESTURE_BLTR
+    // Transitions from {3, {0x04, 0x0A, 0x01}}} to {2, {0x01, 0x0A}}, index 15 in all_snapshots) belong to GESTURE_BLTR
     {15, GESTURE_BLTR},
-    // Transitions from {3, {0x01, 0x0A, 0x04}} to {2, {0x01, 0x02}}, index 11 in all_snapshots) belong to GESTURE_LR | GESTURE_BLTR
+    // Transitions from {3, {0x04, 0x0A, 0x01}}} to {2, {0x01, 0x02}}, index 11 in all_snapshots) belong to GESTURE_LR | GESTURE_BLTR
     {11, GESTURE_LR | GESTURE_BLTR},
-    // Transitions from {3, {0x01, 0x0A, 0x04}} to {2, {0x01, 0x08}}, index 13 in all_snapshots) belong to GESTURE_BT | GESTURE_BLTR
+    // Transitions from {3, {0x04, 0x0A, 0x01}}} to {2, {0x01, 0x08}}, index 13 in all_snapshots) belong to GESTURE_BT | GESTURE_BLTR
     {13, GESTURE_BT | GESTURE_BLTR},
-    // Transitions from {3, {0x01, 0x0A, 0x04}} to {2, {0x0A, 0x04}}, index 47 in all_snapshots) belong to GESTURE_TRBL
+    // Transitions from {3, {0x04, 0x0A, 0x01}} to {2, {0x0A, 0x04}}, index 47 in all_snapshots) belong to GESTURE_TRBL
     {47, GESTURE_TRBL},
-    // Transitions from {3, {0x01, 0x0A, 0x04}} to {2, {0x02, 0x04}}, index 18 in all_snapshots) belong to GESTURE_TB | GESTURE_TRBL
+    // Transitions from {3, {0x04, 0x0A, 0x01}} to {2, {0x02, 0x04}}, index 18 in all_snapshots) belong to GESTURE_TB | GESTURE_TRBL
     {18, GESTURE_TB | GESTURE_TRBL},
-    // Transitions from {3, {0x01, 0x0A, 0x04}} to {2, {0x04, 0x08}}, index 25 in all_snapshots) belong to GESTURE_RL | GESTURE_TRBL
+    // Transitions from {3, {0x04, 0x0A, 0x01}} to {2, {0x04, 0x08}}, index 25 in all_snapshots) belong to GESTURE_RL | GESTURE_TRBL
     {25, GESTURE_RL | GESTURE_TRBL},
+    // Transitions from {3, {0x04, 0x0A, 0x01}} to {2, {0x0A, 0x01}}, index 46 in all_snapshots) belong to GESTURE_BLTR
+    {46, GESTURE_BLTR},
     // All other possible transitions exiting from all_snapshots[53] are illegal (and do not appear here)
     // <<<<<<<
 
     // Valid transitions from snapshot {3, {0x08, 0x05, 0x02}},   (entry [54] in all_snapshots array) begin here:
-    // >>>>>>> entries [289] to [294]
+    // >>>>>>> entries [290] to [295]
 
     // Transitions from {3, {0x08, 0x05, 0x02}} to {2, {0x05, 0x02}}, index 38 in all_snapshots) belong to GESTURE_TLBR
     {38, GESTURE_TLBR},

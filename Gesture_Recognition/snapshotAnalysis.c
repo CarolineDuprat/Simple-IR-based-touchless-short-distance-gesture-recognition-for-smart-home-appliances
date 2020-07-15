@@ -5,10 +5,17 @@
 /**
   * @file After creating the snapshots, you have to analyze them to determine the movement. For this he will have to study the transitions between
   * the different snapshots.
-  * To know which movement corresponds to each transition, you will have to create a database with each possible transition
-  * First, we will list each possible snapshot ( all_snapshots ). Then determine all the possible transitions from a snapshot ( transitions_pool ).
-  * We will then analyze the list of snapshots of our movement. First we will find the position of each snapshot in the list. Then we will find out
-  * which movements correspond to each transition. We will do a logical AND between each possible movement to determine the movement
+  *
+  * To know which movement corresponds to each transition, you will have to create a database with each possible transition (transitions_rows,transitions_pool).
+  *
+  * All mouvements begin with the snapshot {0, {0x00}}, its position is 0 in all_snapshots. We research the transition between this snapshot and the next snapshot.
+  * We know the position of the transition allows after {0, {0x00}} with transitions_rows. After that we will see the transition at the position allows in transitions_pool.
+  * We get back the information about the position of the next snapshot in all_snapshots and the gesture allows is that transition.
+  * We do a logical AND between the before gesture and this gesture.
+  * We repeate this procedure for each transition.
+  *
+  * After that, we convert the id of the gesture to its name.
+  *
   */
 
 
@@ -29,24 +36,7 @@ uint16_t snapshotEqualAll_snapshots (const snapshot_t snapshot,uint16_t counter)
     return retour;
 }
 
-/**
- * @brief snapshotResearch We search for the position of the snapshot in the list of possible snapshots. For this we will go through the table and
- * compare each snapshot to our
- * @param first snapshot
- * @return snapshot's position in the all_snapshots
- */
-uint16_t snapshotResearchAll_snapshots (const snapshot_t snapshot){
-    uint16_t counter=0,retour=0;
 
-    do{
-        retour=snapshotEqualAll_snapshots (snapshot,counter);
-        if (retour==0){
-            counter++;
-        }
-    }while((retour==0)&&(counter<=55));
-
-    return counter;
-}
 /**
  * @brief snapshotResearchTransitions_pool The function allows to return the position of the transition in transitions_pool : gesture's ID
  * and the position of the next snapshot in all_snapshots
@@ -85,7 +75,7 @@ uint16_t snapshotResearchTransitions_pool (const snapshot_t snapshot,uint16_t po
 uint16_t snapshotsGesture (snapshot snapshots){
     const transitions_t *transitions_pool=get_transitions_pool();
     uint16_t gestureID=0xff,positionTransitionPool=0;
-    // the position of the first snapshot is {0, {0x00}}, its position is  in all_snapshots
+    // the position of the first snapshot is {0, {0x00}}, its position is 0 in all_snapshots
     uint16_t positionAllSnap=0;
     printf("gesture t : %d\n",gestureID);
 
@@ -96,6 +86,7 @@ uint16_t snapshotsGesture (snapshot snapshots){
 
         //research the next snapshot in the transition allowed after the snapshot at the position "positionAllSnap"
         positionTransitionPool=snapshotResearchTransitions_pool (snapshots.t[i],positionAllSnap);
+        printf("position TransitionPool : %d\n",positionTransitionPool);
 
         //If positionTransitionPool==1000, the transition is not allowed
         if (positionTransitionPool==1000){

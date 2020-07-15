@@ -29,14 +29,13 @@ int main()
     //Creation of the snapshot list
     snapshotReceivers=snapshotCreation (receivers);
     display(snapshotReceivers);
-    //position=snapshotEqualAll_snapshots (snapshotReceivers.t[1],19);
-    //printf("0 : No, 1 : Yes = %d\n",position);
-    //position=snapshotResearchFirstAll_snapshots(snapshotReceivers.t[4]);
-    //printf("position = %d\n",position);
-    //position=snapshotResearchTransitions_pool (snapshotReceivers.t[3],52);
-    //printf("position = %d\n",position);
+
+    //Analyse gesture
     gesture=snapshotsGesture (snapshotReceivers);
     printf("gesture = %d\n",gesture);
+
+    //Convert the id gesture to the name of the gesture
     nameGesture (gesture);
+
     return 0;
 }
