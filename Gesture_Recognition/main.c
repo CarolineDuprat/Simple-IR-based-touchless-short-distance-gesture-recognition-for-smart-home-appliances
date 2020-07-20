@@ -18,7 +18,7 @@ int main()
     uint16_t gesture=0;
 
     //Link of the file to study
-    char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_310_10_5_4_4_.txt";
+    char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_0_10_10_4_4_.txt";
 
     //translate the information from the file to receivers
     receivers=translateInfoFromFile (lien);
