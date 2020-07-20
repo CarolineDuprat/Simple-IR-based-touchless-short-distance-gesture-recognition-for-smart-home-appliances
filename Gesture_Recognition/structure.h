@@ -25,6 +25,7 @@ typedef struct {
 } receiver_info_t;
 
 typedef struct {
+    uint16_t numberReceivers;
     receiver_info_t receivers[MAX_RECEIVERS];
 } allreceivers_info_t;
 
@@ -52,4 +53,8 @@ typedef struct {
     snapshot_t t[MAX_TIME_MS];
 } snapshot;
 
+typedef struct {
+    FILE* file;
+    uint16_t numberSnapshot;
+} infoFile;
 #endif // STRUCTURE_H

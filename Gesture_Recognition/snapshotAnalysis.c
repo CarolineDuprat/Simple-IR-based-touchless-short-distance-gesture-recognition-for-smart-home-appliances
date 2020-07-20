@@ -35,7 +35,24 @@ uint16_t snapshotEqualAll_snapshots (const snapshot_t snapshot,uint16_t counter)
     }
     return retour;
 }
+/**
+ * @brief snapshotResearchAll_snapshots The function research the position of the snapshot in all_snapshots
+ * It compares all the snapshots in all snapshots until it finds the snapshots in the list
+ * @param snapshot
+ * @return the position of the snapshot in all_snapshots
+ */
+uint16_t snapshotResearchAll_snapshots (const snapshot_t snapshot){
+    uint16_t retour=0,counter=0;
 
+    do{
+        retour=snapshotEqualAll_snapshots (snapshot,counter);
+        if (retour==0){
+            counter++;
+        }
+    }while((counter<=54)&&(retour==0));
+
+    return counter;
+}
 
 /**
  * @brief snapshotResearchTransitions_pool The function allows to return the position of the transition in transitions_pool : gesture's ID
