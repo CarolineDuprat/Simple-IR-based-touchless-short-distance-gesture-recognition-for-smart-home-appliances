@@ -20,6 +20,10 @@ typedef struct {
     uint16_t gestureID;
 } transitions_t;
 
+typedef struct {
+    uint16_t id;
+    char* name;
+} gesture;
 
 const uint16_t *get_transitions_rows(void);
 const transitions_t *get_transitions_pool(void);

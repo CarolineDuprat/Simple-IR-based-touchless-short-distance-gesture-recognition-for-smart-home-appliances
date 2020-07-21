@@ -1,6 +1,8 @@
 #include "gesture.h"
 
 
+
+
 const uint16_t transitions_rows[] = {
     // Transitions exiting from snaphost entry [0] in all_snapshots (snapshot {1, {0x00}}) use the entries [0] to [y-1] in the pool
     // y is the number of valid transitions exiting from this snapshot:

@@ -19,7 +19,17 @@
   *
   */
 
-
+const gesture gestureTableNames[] = {
+    {0x00,"No valid gesture"},
+    {0x01,"Vertical top to bottom"},
+    {0x02,"Vertical bottom to top"},
+    {0x04,"Horizontal left to right"},
+    {0x08,"Horizontal right to left"},
+    {0x10,"Diagonal top-left to bottom-right"},
+    {0x20,"Diagonal top-right to bottom-left"},
+    {0x40,"Diagonal bottom-left to top-right"},
+    {0x80,"Diagonal bottom-right to top-left"},
+};
 /**
  * @brief snapshotEqualAll_snapshots The function compare the snapshot and a snapshot at the position counter in the list of all_snapshots
  * @param snapshot
@@ -87,15 +97,16 @@ uint16_t snapshotResearchTransitions_pool (const snapshot_t snapshot,uint16_t po
     return counter;
 }
 /**
- * @brief snapshotsGestureName
- * @param lien
+ * @brief snapshotsGestureName Analyse the file and determine the name of the mouvement
+ * @param lien Link of the file to study
  */
 void snapshotsGestureName (char *lien){
     const transitions_t *transitions_pool=get_transitions_pool();
     infoFile informationFile;
     allreceivers_info_t receiversInfoFile;
     snapshot_t snapshot;
-    uint16_t gestureID,position,positionTransitionPool=0,positionAllSnap=0;
+    uint16_t gestureID,position,positionTransitionPool=0,positionAllSnap=0,mouvement=0;
+    int16_t gesture_index;
 
     //All mouvements begin with the snapshot {0, {0x00}}, its position is 0 in all_snapshots
     positionAllSnap=0;
@@ -108,14 +119,40 @@ void snapshotsGestureName (char *lien){
 
     //the file is not finish
     while (checkEndFile (informationFile)==0){
+
        //Read a line in the file, and take the id, valid and time of each receivers
        receiversInfoFile = readLineFile (informationFile);
+
        //Create a snapshot
        snapshot=snapshotCreation_t (receiversInfoFile);
        display(snapshot);
+
        //Research the position of the snapshot in all_snapshot
        position= snapshotResearchAll_snapshots (snapshot);
        printf("position = %d\n",position);
+
+       //The movement is in progress and we detect the snapshot 0 so the movement is finished
+       if ((position==0)&&(mouvement==1)){
+
+           //Convert the id of the gesture to its name
+           gesture_index= gestureSearch(gestureID,8);
+           if (gesture_index > 0){
+               printf("Valid gesture detected\n");
+               printf("gesture  : %s\n",gestureTableNames[gesture_index].name);
+           }else{
+               printf("No valid gesture detected\n");
+           }
+
+           //No movement
+           mouvement=0;
+           gestureID=0xff;
+           positionAllSnap=0;
+       }
+       //There is no movement, we detect a snapshot different from 0 so the movement begins
+       else if ((position!=0)&&(mouvement==0)){
+           mouvement=1;
+       }
+
        //If the position of the snapshot is different from the previous one and the position is different from {0, {0x00}}
        if ((position!=positionAllSnap)&&(position!=0)){
            //research the next snapshot in the transition allowed after the snapshot at the position "positionAllSnap"
@@ -141,60 +178,26 @@ void snapshotsGestureName (char *lien){
            }
        }
     }
-    //Convert the id of the gesture to its name
-    nameGesture (gestureID);
 }
 
 /**
- * @brief nameGesture the function displays the name of the gesture
- * @param gestureID id of the gesture
+ * @brief gestureSearch The function research the id of the gesture in GestureTableNames. If the id is not found, return -1
+ * @param idGesture
+ * @param numberGesture number of gesture allowed
+ * @return position of the id in gestureTableName, or -1 if the id is not found
  */
-void nameGesture (uint16_t gestureID ){
+int16_t gestureSearch(uint16_t idGesture,uint16_t numberGesture){
+    int16_t position=-1;
 
-    if (GESTURE_TB == gestureID ){
-        printf("Vertical top to bottom\n");
+    //For each gesture allowed
+    for (uint16_t i=0;i<numberGesture;i++){
+        //Compare idGesture and the id in the table
+        if (idGesture==gestureTableNames[i].id){
+            position=i;
+        }
     }
-    else
-        if(GESTURE_BT == gestureID){
-            printf("Vertical bottom to top \n");
-    }
-    else
-        if(GESTURE_LR == gestureID){
-            printf("Horizontal left to right\n");
-    }
-    else
-        if(GESTURE_RL == gestureID){
-            printf("Horizontal right to left\n");
-    }
-    else
-        if(GESTURE_TLBR == gestureID){
-            printf("Diagonal top-left to bottom-right\n");
-    }
-    else
-        if(GESTURE_TRBL == gestureID){
-            printf("Diagonal top-right to bottom-left\n");
-    }
-    else
-        if(GESTURE_BLTR == gestureID){
-            printf("Diagonal bottom-left to top-right\n");
-    }
-    else
-        if(GESTURE_BRTL == gestureID){
-            printf("Diagonal bottom-right to top-left\n");
-    }
-    else
-        if(GESTURE_ALL == gestureID){
-            printf("All gestures \n");
-    }
-    else
-        if(GESTURE_NONE == gestureID){
-            printf("Error\n");
-    }
-    else{
-        printf("Many gestures are possible\n");
-    }
+    return position;
 }
-
 
 
 

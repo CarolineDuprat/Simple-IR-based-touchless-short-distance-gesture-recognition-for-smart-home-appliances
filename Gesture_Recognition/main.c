@@ -16,10 +16,12 @@ int main()
 
 
     //Link of the file to study
-    char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_355_10_5_4_4_.txt";
+    char *lien="Data\\addRL_TB_BT_LR.txt";
+    //4_1_1_1_-1_-1_-1_-1_1_10_10_5_4_4_
 
 
     snapshotsGestureName (lien);
+
 
 
 
