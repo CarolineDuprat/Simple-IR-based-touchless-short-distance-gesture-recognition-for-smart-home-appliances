@@ -117,7 +117,7 @@ void snapshotsGestureName (char *lien){
     //Open the file
     informationFile=openFile (lien);
 
-    //the file is not finish
+    //as long as the file is not finish
     while (checkEndFile (informationFile)==0){
 
        //Read a line in the file, and take the id, valid and time of each receivers
@@ -136,12 +136,14 @@ void snapshotsGestureName (char *lien){
 
            //Convert the id of the gesture to its name
            gesture_index= gestureSearch(gestureID,8);
+           printf("-------------------------------------------------------------------\n");
            if (gesture_index > 0){
                printf("Valid gesture detected\n");
                printf("gesture  : %s\n",gestureTableNames[gesture_index].name);
            }else{
                printf("No valid gesture detected\n");
            }
+           printf("-------------------------------------------------------------------\n");
 
            //No movement
            mouvement=0;
@@ -190,7 +192,7 @@ int16_t gestureSearch(uint16_t idGesture,uint16_t numberGesture){
     int16_t position=-1;
 
     //For each gesture allowed
-    for (uint16_t i=0;i<numberGesture;i++){
+    for (uint16_t i=0;i<numberGesture+1;i++){
         //Compare idGesture and the id in the table
         if (idGesture==gestureTableNames[i].id){
             position=i;
