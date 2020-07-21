@@ -1,6 +1,7 @@
 #include "snapshot.h"
 #include "snapshotAnalysis.h"
 #include "gesture.h"
+#include "readFile.h"
 
 /**
   * @file After creating the snapshots, you have to analyze them to determine the movement. For this he will have to study the transitions between
@@ -8,7 +9,7 @@
   *
   * To know which movement corresponds to each transition, you will have to create a database with each possible transition (transitions_rows,transitions_pool).
   *
-  * All mouvements begin with the snapshot {0, {0x00}}, its position is 0 in all_snapshots. We research the transition between this snapshot and the next snapshot.
+  * All mouvements begin with the snapshot {0, {0x00}}, its position is 0 in all_snapshots. We read a line in the file to know the next snapshot.We research the transition between this snapshot and the next snapshot.
   * We know the position of the transition allows after {0, {0x00}} with transitions_rows. After that we will see the transition at the position allows in transitions_pool.
   * We get back the information about the position of the next snapshot in all_snapshots and the gesture allows is that transition.
   * We do a logical AND between the before gesture and this gesture.
@@ -86,13 +87,15 @@ uint16_t snapshotResearchTransitions_pool (const snapshot_t snapshot,uint16_t po
     return counter;
 }
 /**
- * @brief snapshotsGesture determine the id of the gesture
- * @param snapshots different snapshots that represent the movement of the object
- * @return id of the gesture
+ * @brief snapshotsGestureName
+ * @param lien
  */
-uint16_t snapshotsGesture (snapshot snapshots){
+void snapshotsGestureName (char *lien){
     const transitions_t *transitions_pool=get_transitions_pool();
-    uint16_t gestureID,positionTransitionPool=0,positionAllSnap;
+    infoFile informationFile;
+    allreceivers_info_t receiversInfoFile;
+    snapshot_t snapshot;
+    uint16_t gestureID,position,positionTransitionPool=0,positionAllSnap=0;
 
     //All mouvements begin with the snapshot {0, {0x00}}, its position is 0 in all_snapshots
     positionAllSnap=0;
@@ -100,37 +103,48 @@ uint16_t snapshotsGesture (snapshot snapshots){
     //all gestures are possible
     gestureID=0xff;
 
-    printf("gesture t : %d\n",gestureID);
+    //Open the file
+    informationFile=openFile (lien);
 
-    //For each snapshot
-    for (uint16_t i=0;i<snapshots.numberSnapshot;i++){
+    //the file is not finish
+    while (checkEndFile (informationFile)==0){
+       //Read a line in the file, and take the id, valid and time of each receivers
+       receiversInfoFile = readLineFile (informationFile);
+       //Create a snapshot
+       snapshot=snapshotCreation_t (receiversInfoFile);
+       display(snapshot);
+       //Research the position of the snapshot in all_snapshot
+       position= snapshotResearchAll_snapshots (snapshot);
+       printf("position = %d\n",position);
+       //If the position of the snapshot is different from the previous one and the position is different from {0, {0x00}}
+       if ((position!=positionAllSnap)&&(position!=0)){
+           //research the next snapshot in the transition allowed after the snapshot at the position "positionAllSnap"
+           positionTransitionPool=snapshotResearchTransitions_pool (snapshot,positionAllSnap);
+           printf("position TransitionPool : %d\n",positionTransitionPool);
 
-        printf("transition : %d\n",i);
+           //If positionTransitionPool==1000, the transition is not allowed
+           if (positionTransitionPool==1000){
+               printf("the transition is not allowed");
+               //Any gesture
+               gestureID=0x00;
+           }
+           else{
+               printf("gesture t : %d\n",transitions_pool[positionTransitionPool].gestureID);
 
-        //research the next snapshot in the transition allowed after the snapshot at the position "positionAllSnap"
-        positionTransitionPool=snapshotResearchTransitions_pool (snapshots.t[i],positionAllSnap);
-        printf("position TransitionPool : %d\n",positionTransitionPool);
+               // Logical AND between the before gestureID and the gesture allows with this new transition
+               gestureID= gestureID & transitions_pool[positionTransitionPool].gestureID;
+               printf("gesture  = %d\n",gestureID);
 
-        //If positionTransitionPool==1000, the transition is not allowed
-        if (positionTransitionPool==1000){
-            printf("the transition is not allowed");
-            //Any gesture
-            gestureID=0x00;
-        }
-        else{
-            printf("gesture t : %d\n",transitions_pool[positionTransitionPool].gestureID);
-
-            // Logical AND between the before gestureID and the gesture allows with this new transition
-            gestureID= gestureID & transitions_pool[positionTransitionPool].gestureID;
-            printf("gesture  = %d\n",gestureID);
-
-            // the position of the next snapshot is transitions_pool[positionTransitionPool].snapshotID
-            positionAllSnap=transitions_pool[positionTransitionPool].snapshotID;
-            printf("position next snapshot : %d\n",positionAllSnap);
-        }
+               // the position of the next snapshot is transitions_pool[positionTransitionPool].snapshotID
+               positionAllSnap=transitions_pool[positionTransitionPool].snapshotID;
+               printf("position next snapshot : %d\n",positionAllSnap);
+           }
+       }
     }
-    return gestureID;
+    //Convert the id of the gesture to its name
+    nameGesture (gestureID);
 }
+
 /**
  * @brief nameGesture the function displays the name of the gesture
  * @param gestureID id of the gesture

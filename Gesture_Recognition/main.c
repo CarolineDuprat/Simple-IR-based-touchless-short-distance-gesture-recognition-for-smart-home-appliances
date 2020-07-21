@@ -13,37 +13,13 @@
 
 int main()
 {
-    //allreceivers_info receivers;
-    //snapshot snapshotReceivers;
-    //uint16_t gesture=0;
+
 
     //Link of the file to study
-    char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_0_10_10_4_4_.txt";
+    char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_355_10_5_4_4_.txt";
 
-    //translate the information from the file to receivers
-    //receivers=translateInfoFromFile (lien);
 
-    //Creation of a file with data from receivers
-    //checkFunction (receivers);
-
-    //Creation of the snapshot list
-    //snapshotReceivers=snapshotCreation (receivers);
-    //display(snapshotReceivers);
-
-    //Analyse gesture
-    //gesture=snapshotsGesture (snapshotReceivers);
-    //printf("gesture = %d\n",gesture);
-
-    //Convert the id gesture to the name of the gesture
-    //nameGesture (gesture);
-    allreceivers_info_t receiverst;int i=0;
-    infoFile informationFile = openFile (lien);
-    while (checkEndFile (informationFile)==0){
-        printf("i = %d\n",i);
-        i++;
-       receiverst = readLineFile (informationFile);
-    }
-
+    snapshotsGestureName (lien);
 
 
 
