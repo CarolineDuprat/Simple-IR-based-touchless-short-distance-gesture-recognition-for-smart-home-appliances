@@ -4,6 +4,7 @@
 #include "readFile.h"
 #include "snapshot.h"
 #include "snapshotAnalysis.h"
+#include "generateSnapshot.h"
 
 /**
  * @file The objective of this program is to determine the movement performed by the object from a data file of the receivers.
@@ -19,7 +20,9 @@ int main()
     //Put the file Data in build gesture recognition
     char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_315_10_5_4_4_.txt";
 
-    snapshotsGestureName (lien);
+    //snapshotsGestureName (lien);
+    uint16_t ok = calculBinomialCoeff (9,4);
+    printf("combinaison = %d\n",ok);
 
 
 
