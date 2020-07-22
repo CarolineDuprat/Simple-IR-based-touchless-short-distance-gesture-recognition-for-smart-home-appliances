@@ -33,13 +33,17 @@ uint16_t numberReceiver (char line[SIZE_MAX_CHARACTER]){
  */
 infoFile openFile (char *lien){
     char line[SIZE_MAX_CHARACTER] = "";
+
     //Creation of the pointer to read in the file
     infoFile informationFile;
     informationFile.file=NULL;
+
     //Opening the file in reading mode
     informationFile.file = fopen(lien, "r");
+
     if (informationFile.file != NULL)
     {
+        //count the number of receivers
         informationFile.numberSnapshot=numberReceiver (fgets(line, SIZE_MAX_CHARACTER, informationFile.file));
         //Returns the cursor to the beginning of the file because we just read a line from the file and the pointer has advanced
         rewind(informationFile.file);
@@ -48,6 +52,7 @@ infoFile openFile (char *lien){
     {
         printf("Impossible to open the file");
     }
+
     return informationFile;
 }
 /**
@@ -62,12 +67,15 @@ allreceivers_info_t readLineFile (infoFile informationFile){
 
     //for each receiver
     for (uint16_t i=0;i<informationFile.numberSnapshot;i++){
+
         //read its ID, time and valid
         fscanf(informationFile.file,"0x%d %d %d ",&iD,&time,&valid);
+
         //add this information in the struct receivers
         infoReceivers.receivers[i].id=iD;
         infoReceivers.receivers[i].time=time;
         infoReceivers.receivers[i].valid=valid;
+
         printf("ID = %d\n",iD);
         printf("time = %d\n",time);
         printf("valid = %d\n",valid);
@@ -82,9 +90,11 @@ allreceivers_info_t readLineFile (infoFile informationFile){
  */
 uint8_t checkEndFile (infoFile informationFile){
     uint8_t check=0;
+
     //feof returns a value other than zero, if the pointer of the file has reached the end of the file; otherwise the value of the result is zero.
     if (feof( informationFile.file )!=0){
         check=1;
+
         //file closing
         fclose(informationFile.file);
     }

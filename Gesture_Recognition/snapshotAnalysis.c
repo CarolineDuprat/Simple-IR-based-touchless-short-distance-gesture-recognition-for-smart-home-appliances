@@ -56,7 +56,9 @@ uint16_t snapshotResearchAll_snapshots (const snapshot_t snapshot){
     uint16_t retour=0,counter=0;
 
     do{
+        //compare the snapshot and a snapshot at the position counter in the list of all_snapshots
         retour=snapshotEqualAll_snapshots (snapshot,counter);
+        //if retour==0, Snapshots are differents
         if (retour==0){
             counter++;
         }
