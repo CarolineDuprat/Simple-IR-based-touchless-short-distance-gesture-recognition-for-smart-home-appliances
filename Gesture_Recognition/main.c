@@ -21,8 +21,10 @@ int main()
     char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_315_10_5_4_4_.txt";
 
     //snapshotsGestureName (lien);
-    uint16_t ok = calculBinomialCoeff (9,4);
-    printf("combinaison = %d\n",ok);
+    //uint16_t ok = calculBinomialCoeff (9,4);
+    //printf("combinaison = %d\n",ok);
+
+    createAllSnap (initSystem ());
 
 
 

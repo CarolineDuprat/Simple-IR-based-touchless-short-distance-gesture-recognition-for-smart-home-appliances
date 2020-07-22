@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 #define MAX_RECEIVERS 10
 #define MAX_GESTURE 10
 
@@ -50,10 +49,15 @@ typedef struct {
 } infoFile;
 
 typedef struct {
-    double x;
-    double y;
+    int16_t x;
+    int16_t y;
     uint16_t id;
 } position;
+
+typedef struct {
+    int16_t m;
+    int16_t p;
+} coefLine;
 
 typedef struct {
     uint16_t numberReceivers;
