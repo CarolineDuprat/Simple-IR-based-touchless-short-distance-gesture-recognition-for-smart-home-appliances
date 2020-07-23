@@ -133,11 +133,18 @@ void createAllSnap (infoSystem system){
             }
         }
         printf("numberOneReceiver  = %d\n",numberOneReceiver);
+
+
         //combined more than two receivers
+            // combined if points are aligned => function pointsAligned
 
 
 
         /* More than one receiver */
+        //For each single combined receivers ( 1 )
+            //For (2, 3, 3, 4.... nbrReceiver - 1) receivers
+                    //For each single combined receivers ( 2 )
+                                // if id1 & id2 != 1 => combinaison is allowed
 
     }
 }
