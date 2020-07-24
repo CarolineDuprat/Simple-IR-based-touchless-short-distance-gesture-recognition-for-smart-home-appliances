@@ -2,8 +2,8 @@
 #include "snapshot.h"
 
 /**
- * @brief calculBinomialCoeff                        n!
- *                             calcul ( n ) = -----------------
+ * @brief calculBinomialCoeff         ( n )          n!
+ *                             calcul (   ) = -----------------
  *                                    ( k )    k! * ( n - k )!
  * @param n
  * @param k
@@ -75,6 +75,29 @@ uint8_t checkIfSnapshopInAllSnap (snapshot_t all_snapshots[],uint16_t numberSnap
     }
     return check;
 }
+/**
+ * @brief positionReceiverInSnapshot The function returns position of all the receivers present in the snapshot
+ * @param snapshot
+ * @param system information about the system : position Receiver, number of receivers, ..
+ * @return position of all the receivers present in the snapshot
+ */
+positionReceivers positionReceiverInSnapshot (snapshot_t snapshot,infoSystem system){
+    positionReceivers receivers;
+    receivers.numberReceivers=0;
+     for (uint16_t i=0;i<snapshot.nreceivers;i++){
+         for (uint16_t j=0;j<system.numberReceivers;j++){
+             if ((snapshot.receivers[i] & system.pos[j].id) == system.pos[j].id){
+                 receivers.pos[receivers.numberReceivers]=system.pos[j];
+                 printf("id = %d\n",system.pos[j].id);
+                 printf("x = %d\n",system.pos[j].x);
+                 printf("y = %d\n",system.pos[j].y);
+                 receivers.numberReceivers++;
+             }
+         }
+     }
+    printf("number of receivers = %d\n",receivers.numberReceivers);
+    return receivers;
+}
 infoSystem initSystem (){
     infoSystem system;
     system.numberReceivers=4;
@@ -110,6 +133,7 @@ void createAllSnap (infoSystem system){
             all_snapshots[numberOneReceiver].nreceivers=1;
             all_snapshots[numberOneReceiver].receivers[0]=system.pos[i].id;
             display(all_snapshots[numberOneReceiver]);
+            positionReceiverInSnapshot (all_snapshots[numberOneReceiver],system);
             numberOneReceiver++;
         }
 
@@ -127,6 +151,7 @@ void createAllSnap (infoSystem system){
                         //If it's a new snapshot, add this snapshot in all_snapshots
                         all_snapshots[numberOneReceiver]=snapTest;
                         display(all_snapshots[numberOneReceiver]);
+                        positionReceiverInSnapshot (all_snapshots[numberOneReceiver],system);
                         numberOneReceiver++;
                     }
                 }
@@ -136,15 +161,31 @@ void createAllSnap (infoSystem system){
 
 
         //combined more than two receivers
-            // combined if points are aligned => function pointsAligned
+
+            // take the combined snapshot with n-1 receivers
+            // take one receiver ( 0 to system.numberReceivers), check if this new receiver is not already in the combined snapshot,
+            // if not check if this new point is aligned with the other point in the snapshot
+            // if they are aligned create a new id combined.
+
+
+            //        = > (snapshot & newid) != newid    // this new receiver is not already in the combined snapshot
+            //        = > position=positionReceiverInSnapshot (snapshot,system)  // retrieve the positions of receivers present in the snapshot
+            //        = > pointsAligned(position[0],position[1],new point)     // check if this new point is aligned with points belongings in the snapshot
 
 
 
         /* More than one receiver */
-        //For each single combined receivers ( 1 )
-            //For (2, 3, 3, 4.... nbrReceiver - 1) receivers
-                    //For each single combined receivers ( 2 )
-                                // if id1 & id2 != 1 => combinaison is allowed
+            //Take one previous snapshot with n-1 receivers, take one receiver belonging to all_snapshots , if this new receivers it is not
+            //in previous snapshot with n-1 receivers, create a new snapshot with n receivers
+
+            //For each receivers with 1 receivers ( * )
+                //Create a tab : position of a receiver (*) with 1 ,2 ,3 ,... receivers
+                // For each number of receivers allowed in a snapshot ( system.numberReceivers - 1)
+                        //take all the snapshot created with the snapshot [0] is (* ) and the number of receivers is n-1
+                                // For each receivers with 1 receivers
+                                        // if this new id is not already in the snapshot
+                                                //  create a new snapshot with n receivers and the snapshot[n] = id
+
 
     }
 }

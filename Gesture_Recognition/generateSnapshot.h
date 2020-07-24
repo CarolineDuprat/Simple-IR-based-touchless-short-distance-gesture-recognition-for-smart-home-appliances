@@ -8,4 +8,5 @@ uint8_t pointsAligned(position A,position B,position C);
 uint8_t checkIfSnapshopInAllSnap (snapshot_t all_snapshots[],uint16_t numberSnapshot,snapshot_t newSnapshot);
 infoSystem initSystem ();
 void createAllSnap (infoSystem system);
+positionReceivers positionReceiverInSnapshot (snapshot_t snapshot,infoSystem system);
 #endif // GENERATESNAPSHOT_H

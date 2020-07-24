@@ -60,6 +60,11 @@ typedef struct {
 } coefLine;
 
 typedef struct {
+    position pos[MAX_RECEIVERS];
+    uint16_t numberReceivers;
+} positionReceivers;
+
+typedef struct {
     uint16_t numberReceivers;
     position pos[MAX_RECEIVERS];
     uint16_t numberGesture;
