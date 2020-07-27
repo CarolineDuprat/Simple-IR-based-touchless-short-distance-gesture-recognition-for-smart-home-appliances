@@ -5,11 +5,12 @@
 #include <string.h>
 
 #define MAX_RECEIVERS 10
+
 #define MAX_GESTURE 10
 
 //Maximum number of characters per line
 #define SIZE_MAX_CHARACTER MAX_RECEIVERS*20
-
+#define MAX_SNAPSHOT 10000
 #define MAX_TIME_MS 1000
 
 typedef unsigned char uint8_t;
@@ -37,6 +38,11 @@ typedef struct {
 } snapshot_t;
 
 typedef struct {
+    uint16_t nbrsnapshots;
+    snapshot_t snapshot[MAX_SNAPSHOT];
+} snapshots;
+
+typedef struct {
     uint16_t nreceivers;
     uint16_t receivers[MAX_RECEIVERS];
     uint16_t time[MAX_RECEIVERS];
@@ -57,7 +63,13 @@ typedef struct {
 typedef struct {
     int16_t m;
     int16_t p;
+    int16_t a;
 } coefLine;
+
+typedef struct {
+    uint16_t position;
+    uint16_t numberSnap;
+} posInAllSnap;
 
 typedef struct {
     position pos[MAX_RECEIVERS];
