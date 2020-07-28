@@ -99,27 +99,7 @@ positionReceivers positionReceiverInSnapshot (snapshot_t snapshot,infoSystem sys
     printf("number of receivers = %d\n",receivers.numberReceivers);
     return receivers;
 }
-infoSystem initSystem (){
-    infoSystem system;
-    system.numberReceivers=4;
-    system.pos[0].x=1;
-    system.pos[0].y=1;
-    system.pos[0].id=1;
 
-    system.pos[1].x=1;
-    system.pos[1].y=-1;
-    system.pos[1].id=2;
-
-    system.pos[2].x=-1;
-    system.pos[2].y=-1;
-    system.pos[2].id=4;
-
-    system.pos[3].x=-1;
-    system.pos[3].y=1;
-    system.pos[3].id=8;
-
-    return system;
-}
 /**
  * @brief displayAllSnap display a list of snapshots
  * @param all_snapshots list of snapshots
@@ -318,4 +298,14 @@ snapshots createAllSnap (infoSystem system){
         all_snapshots.nbrsnapshots=numberReceiver;
     }
     return all_snapshots;
+}
+
+void createTransitions (snapshots  all_snapshots,infoSystem system){
+    transition transition;
+    uint16_t numberTransitions=0;
+
+    for (uint16_t i=0;i<all_snapshots.nbrsnapshots;i++){
+        transition.transitions_rows[i]=numberTransitions;
+        //Add transition...
+    }
 }

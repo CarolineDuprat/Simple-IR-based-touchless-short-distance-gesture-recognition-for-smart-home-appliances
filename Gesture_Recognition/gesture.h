@@ -15,10 +15,7 @@
 #define GESTURE_ALL  0xff
 #define GESTURE_NONE 0x00
 
-typedef struct {
-    uint16_t snapshotID;
-    uint16_t gestureID;
-} transitions_t;
+
 
 typedef struct {
     uint16_t id;

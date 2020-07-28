@@ -43,6 +43,16 @@ typedef struct {
 } snapshots;
 
 typedef struct {
+    uint16_t snapshotID;
+    uint16_t gestureID;
+} transitions_t;
+
+typedef struct {
+    uint16_t transitions_rows[MAX_SNAPSHOT];
+    transitions_t transitions_pool[MAX_SNAPSHOT];
+} transition;
+
+typedef struct {
     uint16_t nreceivers;
     uint16_t receivers[MAX_RECEIVERS];
     uint16_t time[MAX_RECEIVERS];
