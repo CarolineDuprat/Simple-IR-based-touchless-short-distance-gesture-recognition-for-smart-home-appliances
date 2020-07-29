@@ -87,10 +87,22 @@ typedef struct {
 } positionReceivers;
 
 typedef struct {
+    uint16_t id;
+    char* name;
+} gesture;
+
+typedef struct {
+    uint16_t id;
+    uint16_t NAngle;
+    uint16_t DAngle;
+    char* name;
+} gestureD;
+
+typedef struct {
     uint16_t numberReceivers;
     position pos[MAX_RECEIVERS];
     uint16_t numberGesture;
-    uint16_t gesture[MAX_GESTURE];
+    gestureD gesture[MAX_GESTURE];
 } infoSystem;
 
 #endif // STRUCTURE_H
