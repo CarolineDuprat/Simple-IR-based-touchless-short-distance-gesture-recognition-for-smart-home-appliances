@@ -10,7 +10,9 @@
 
 //Maximum number of characters per line
 #define SIZE_MAX_CHARACTER MAX_RECEIVERS*20
-#define MAX_SNAPSHOT 10000
+#define MAX_SNAPSHOT 1000
+#define MAX_MOVEMENT 500
+#define MAX_TRANSITION 1000
 #define MAX_TIME_MS 1000
 
 typedef unsigned char uint8_t;
@@ -104,5 +106,17 @@ typedef struct {
     uint16_t numberGesture;
     gestureD gesture[MAX_GESTURE];
 } infoSystem;
+
+typedef struct {
+    uint16_t id;
+    uint16_t angle;
+    uint16_t nbrsnapshots;
+    snapshot_t snapshot[20];
+} dataGesture;
+
+typedef struct {
+    uint16_t numberMovements;
+    dataGesture movement[MAX_MOVEMENT];
+} dataGestures;
 
 #endif // STRUCTURE_H

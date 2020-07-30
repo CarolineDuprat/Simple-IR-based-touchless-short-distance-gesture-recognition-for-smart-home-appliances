@@ -13,20 +13,23 @@
 
 // arguments : name.exe NumberOfReceiver x1[cm] y1[cm] x2[cm] y2[cm].... xN[cm] yN[cm] NumberOfGesture name1 angleNominal1[°] angleDeviation1[°] name2 angleNominal2[°] angleDeviation2[°] name3 angleNominal3[°] angleDeviation3[°]...
 // 4 1 1 1 -1 -1 -1 -1 1 8 "TB" 90 10 "BT" 270 10 "RL" 0 10 "LR" 180 10 "TRBL" 45 10 "TLBR" 135 10 "BRTL" 315 10 "BLTR" 225 10
+// 4 1 1 1 -1 -1 -1 -1 1 5 "RL" 0 10 "TB" 90 10 "LR" 180 10 "BT" 270 10
 int main(int argc, char *argv[])
 {
     snapshots all_snapshots;
+    dataGestures dataGestures;
+    transition transitions;
     infoSystem system;
     uint16_t j=1,error=0,angleN,angleD;
 
     //Link of the file to study
     //Put the file Data in build gesture recognition
-    char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_315_10_5_4_4_.txt";
+    char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_0_10_5_4_4_.txt";
 
 
     // Initialization and verification of parameters
 
-    if (argc > 5){
+    if (argc > 7){
         system.numberReceivers= atoi(argv[j]);
         printf("NumberReceivers = %d\n",system.numberReceivers);
         j++;
@@ -66,10 +69,17 @@ int main(int argc, char *argv[])
         }
     }
     if (error ==0){
-        //all_snapshots=createAllSnap (system);
-
-
-        //snapshotsGestureName (lien);
+        //Create data with all movements allow
+        //To do..
+        dataGestures=createDataBase (system);
+        displayDataGesture(dataGestures);
+        //dataGestures=init ();
+        //Create all_snapshots
+        all_snapshots=extractSnapshot (dataGestures);
+        //Create transitions_rows and transitions_pool
+        transitions=extractTransition (dataGestures,all_snapshots);
+        //Analyse the file
+        snapshotsGestureName (lien,all_snapshots,transitions,system);
     }
 
 

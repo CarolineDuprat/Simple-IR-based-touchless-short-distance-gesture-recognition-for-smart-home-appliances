@@ -2,7 +2,7 @@
 #define SNAPSHOT_H
 #include "structure.h"
 
-const snapshot_t *get_all_snapshots(void);
+//const snapshot_t *get_all_snapshots(void);
 
 snapshot_t snapshotCreation_t (allreceivers_info_t receivers);
 

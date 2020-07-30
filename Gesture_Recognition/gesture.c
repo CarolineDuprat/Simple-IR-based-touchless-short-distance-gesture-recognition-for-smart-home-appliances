@@ -953,7 +953,7 @@ const transitions_t transitions_pool[] = {
     // All other possible transitions exiting from all_snapshots[54] are illegal (and do not appear here)
     // <<<<<<<
 };
-
+/*
 const uint16_t *get_transitions_rows(void)
 {
     return transitions_rows;
@@ -962,4 +962,4 @@ const uint16_t *get_transitions_rows(void)
 const transitions_t *get_transitions_pool(void)
 {
     return transitions_pool;
-}
+}*/

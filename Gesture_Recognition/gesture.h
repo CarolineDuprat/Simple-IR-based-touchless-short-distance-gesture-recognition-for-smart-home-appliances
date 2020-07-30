@@ -19,7 +19,7 @@
 
 
 
-const uint16_t *get_transitions_rows(void);
-const transitions_t *get_transitions_pool(void);
+//const uint16_t *get_transitions_rows(void);
+//const transitions_t *get_transitions_pool(void);
 
 #endif // GESTURE_H

@@ -94,9 +94,9 @@ const snapshot_t all_snapshots[] = {
     {3, {0x08, 0x05, 0x02}}, /* 54 */
 };
 
-const snapshot_t * get_all_snapshots(void) {
+/*const snapshot_t * get_all_snapshots(void) {
     return all_snapshots;
-}
+}*/
 
 /**
  * @brief snapshotCreation_t Creation of a snapshot. Read the receiver states, if the receiver is in front of the object (valid == 1),

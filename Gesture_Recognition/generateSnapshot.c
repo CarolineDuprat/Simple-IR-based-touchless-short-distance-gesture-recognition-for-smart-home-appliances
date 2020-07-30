@@ -100,16 +100,7 @@ positionReceivers positionReceiverInSnapshot (snapshot_t snapshot,infoSystem sys
     return receivers;
 }
 
-/**
- * @brief displayAllSnap display a list of snapshots
- * @param all_snapshots list of snapshots
- * @param number number of snapshots
- */
-void displayAllSnap(snapshots all_snapshots,uint16_t number){
-    for (uint16_t i=0;i<number;i++){
-        display(all_snapshots.snapshot[i]);
-    }
-}
+
 
 /**
  * @brief createAllSnap create a list with all the snapshot possible
@@ -299,13 +290,274 @@ snapshots createAllSnap (infoSystem system){
     }
     return all_snapshots;
 }
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void createTransitions (snapshots  all_snapshots,infoSystem system){
-    transition transition;
-    uint16_t numberTransitions=0;
 
-    for (uint16_t i=0;i<all_snapshots.nbrsnapshots;i++){
-        transition.transitions_rows[i]=numberTransitions;
-        //Add transition...
+dataGesture SnapshotsAngle (infoSystem system,uint16_t angle){
+    dataGesture gesture;
+    gesture.id=0;
+    if ((angle==0)||(angle==359)||(angle==1)){
+        printf("angle 0 : %d\n",angle);
+        gesture.id=1;
+        gesture.angle=0;
+        gesture.nbrsnapshots=4;
+        gesture.snapshot[0].nreceivers=0;
+        gesture.snapshot[0].receivers[0]=0;
+        gesture.snapshot[1].nreceivers=1;
+        gesture.snapshot[1].receivers[0]=3;
+        gesture.snapshot[2].nreceivers=2;
+        gesture.snapshot[2].receivers[0]=3;
+        gesture.snapshot[2].receivers[1]=12;
+        gesture.snapshot[3].nreceivers=1;
+        gesture.snapshot[3].receivers[0]=12;
+    }
+    else if ((angle==90)||(angle==89)||(angle==91)){
+        printf("angle 90 : %d\n",angle);
+        gesture.id=2;
+        gesture.angle=90;
+        gesture.nbrsnapshots=4;
+        gesture.snapshot[0].nreceivers=0;
+        gesture.snapshot[0].receivers[0]=0;
+        gesture.snapshot[1].nreceivers=1;
+        gesture.snapshot[1].receivers[0]=9;
+        gesture.snapshot[2].nreceivers=2;
+        gesture.snapshot[2].receivers[0]=9;
+        gesture.snapshot[2].receivers[1]=6;
+        gesture.snapshot[3].nreceivers=1;
+        gesture.snapshot[3].receivers[0]=6;
+    }
+    else if ((angle==180)||(angle==179)||(angle==181)){
+        printf("angle 180 : %d\n",angle);
+        gesture.id=4;
+        gesture.angle=180;
+        gesture.nbrsnapshots=4;
+        gesture.snapshot[0].nreceivers=0;
+        gesture.snapshot[0].receivers[0]=0;
+        gesture.snapshot[1].nreceivers=1;
+        gesture.snapshot[1].receivers[0]=12;
+        gesture.snapshot[2].nreceivers=2;
+        gesture.snapshot[2].receivers[0]=12;
+        gesture.snapshot[2].receivers[1]=3;
+        gesture.snapshot[3].nreceivers=1;
+        gesture.snapshot[3].receivers[0]=3;
+    }
+    else if ((angle == 270)||(angle==269)||(angle==271)){
+        printf("angle 270 : %d\n",angle);
+        gesture.id=8;
+        gesture.angle=270;
+        gesture.nbrsnapshots=4;
+        gesture.snapshot[0].nreceivers=0;
+        gesture.snapshot[0].receivers[0]=0;
+        gesture.snapshot[1].nreceivers=1;
+        gesture.snapshot[1].receivers[0]=6;
+        gesture.snapshot[2].nreceivers=2;
+        gesture.snapshot[2].receivers[0]=6;
+        gesture.snapshot[2].receivers[1]=9;
+        gesture.snapshot[3].nreceivers=1;
+        gesture.snapshot[3].receivers[0]=9;
+    }
+    return gesture;
+}
+/**
+ * @brief createDataBase
+ * @param system information about the system : number of receivers, positions,
+ * @return list of data with all the movement allowed
+ */
+dataGestures createDataBase (infoSystem system){
+    uint16_t angle=0;
+    int16_t minAngle,maxAngle;
+    dataGesture gesture;
+    dataGestures dataGestures;
+    dataGestures.numberMovements=0;
+
+    //For each gesture
+    for (uint16_t i=0;i<system.numberGesture;i++){
+        printf("direction %d\n",system.gesture[i].NAngle);
+        minAngle=system.gesture[i].NAngle-system.gesture[i].DAngle;
+        maxAngle=system.gesture[i].NAngle+system.gesture[i].DAngle+1;
+        //From minAngle to maxAngle ranging from 1 in 1
+        for (int16_t j=minAngle;j<maxAngle;j++){
+            if (j < 0){
+                angle=360+j;
+            }else if (j> 359){
+                angle=360-j;
+            }else{
+                angle=j;
+            }
+            printf("angle  = %d\n",angle);
+            //Create all snapshots to make the movement with the direction = angle
+            gesture = SnapshotsAngle (system,angle);
+            printf("gesture.nbrsnapshots  = %d\n",gesture.nbrsnapshots);
+            dataGestures.movement[dataGestures.numberMovements]=gesture;
+            dataGestures.numberMovements++;
+        }
+    }
+    printf("dataGestures.numberMovements  = %d\n",dataGestures.numberMovements);
+    return dataGestures;
+}
+/**
+ * @brief displayDataGesture display data
+ * @param dataGestures list of data with all the movement allowed
+ */
+void displayDataGesture(dataGestures dataGestures){
+    //For each snapshot
+    printf("dataGestures.numberMovements  = %d\n",dataGestures.numberMovements);
+    for (uint16_t i=0;i<dataGestures.numberMovements;i++){
+        printf("dataGestures.movement[%d].nbrsnapshots  = %d\n",i,dataGestures.movement[i].nbrsnapshots);
+        for (uint16_t j=0;j<dataGestures.movement[i].nbrsnapshots;j++){
+           display(dataGestures.movement[i].snapshot[j]);
+        }
     }
 }
+/**
+ * @brief displayAllSnap display a list of snapshots
+ * @param all_snapshots list of snapshots
+ * @param number number of snapshots
+ */
+void displayAllSnap(snapshots all_snapshots,uint16_t number){
+    //For each snapshot
+    for (uint16_t i=0;i<number;i++){
+        display(all_snapshots.snapshot[i]);
+    }
+}
+/**
+ * @brief extractSnapshot The function takes all the different snapshots in dataGesture, and create a liste with all these snapshots
+ * @param dataGestures list of data with all movements allowed
+ * @return all_snapshots
+ */
+snapshots extractSnapshot (dataGestures dataGestures){
+    snapshots all_snapshots;
+
+    //Init with the snapshot {0,{0}}
+    all_snapshots.snapshot[0].nreceivers=0;
+    all_snapshots.snapshot[0].receivers[0]=0;
+    all_snapshots.nbrsnapshots=1;
+
+    //For each movement
+    for (uint16_t i=0;i<dataGestures.numberMovements;i++){
+
+       //For each snapshot
+       for (uint16_t j=0;j<dataGestures.movement[i].nbrsnapshots;j++){
+
+            //If the snapshot is new
+            if (checkIfSnapshopInAllSnap(all_snapshots.snapshot,all_snapshots.nbrsnapshots,dataGestures.movement[i].snapshot[j])==0){
+                all_snapshots.snapshot[all_snapshots.nbrsnapshots]=dataGestures.movement[i].snapshot[j];
+                all_snapshots.nbrsnapshots++;
+            }
+        }
+    }
+    displayAllSnap(all_snapshots,all_snapshots.nbrsnapshots);
+    printf("NumberSnap  = %d\n",all_snapshots.nbrsnapshots);
+    return all_snapshots;
+}
+/**
+ * @brief positionAll_Snapshots research the position of the snapshot in all_snapshots
+ * @param all_snapshots list of snapshots
+ * @param snapshot
+ * @return the position of the snapshot
+ */
+uint16_t positioninAll_Snapshots (snapshots all_snapshots,snapshot_t snapshot){
+    uint16_t position;
+    //For each snapshot
+    for (uint16_t i=0;i<all_snapshots.nbrsnapshots;i++){
+        //If the snapshot in all_snapshots equals snapshot => keep the position of this snapshot in position
+        if (equal(all_snapshots.snapshot[i],snapshot)==1){
+            position=i;
+        }
+    }
+    return position;
+}
+/**
+ * @brief displayAllSnap display the row and the pool transition
+ * @param all_snapshots list of snapshots
+ * @param transitions all the transition after each snapshot
+ */
+void displayAllTransition(snapshots all_snapshots,transition transitions){
+
+    //For each snapshot
+    for (uint16_t i=0;i<all_snapshots.nbrsnapshots;i++){
+
+        printf("---------------------------------------------------- \n");
+        display(all_snapshots.snapshot[i]);
+        printf("---------------------------------------------------- \n");
+
+        //For each transition for this snapshot
+        for (uint16_t j=transitions.transitions_rows[i];j<transitions.transitions_rows[i+1];j++){
+            printf("transition %d \n",j);
+            //Display the snapshot and the gesture
+            display(all_snapshots.snapshot[transitions.transitions_pool[j].snapshotID]);
+            printf("gesture %d \n",transitions.transitions_pool[j].gestureID);
+        }
+    }
+}
+/**
+ * @brief extractTransition Create transitions_rows and transitions_pool
+ * @param dataGestures list of data with all the movement allowed
+ * @param all_snapshots list of snapshots
+ * @return transitions_rows and transitions_pool
+ */
+transition extractTransition (dataGestures dataGestures,snapshots all_snapshots){
+    transition transitions;
+    uint16_t numberTransition=0,positionSnapshot=0,positionTransition=0,add=0;
+    transitions.transitions_rows[0]=0;
+
+    //For each snapshot
+    for (uint16_t i=0;i<all_snapshots.nbrsnapshots;i++){
+
+        printf("---------------------------------------------------- \n");
+        display(all_snapshots.snapshot[i]);
+        transitions.transitions_rows[i]=numberTransition;
+        printf("Start %d \n",numberTransition);
+        printf("---------------------------------------------------- \n");
+
+        //Research this snapshot in dataGestures
+        //For each movement
+        for (uint16_t l=0;l<dataGestures.numberMovements;l++){
+
+            //For each snapshot
+            for (uint16_t j=0;j<dataGestures.movement[l].nbrsnapshots-1;j++){
+                display(dataGestures.movement[l].snapshot[j]);
+
+                if (equal(all_snapshots.snapshot[i],dataGestures.movement[l].snapshot[j])==1){
+                    printf("equal\n");
+
+                    //Take next snap => research position in all snap
+                    positionSnapshot = positioninAll_Snapshots (all_snapshots,dataGestures.movement[l].snapshot[j+1]);
+                    printf("position next snap %d \n",positionSnapshot);
+
+                    //Research if the snapshot is already in the transition
+                    positionTransition = transitions.transitions_rows[i];
+                    add=0;
+
+                    //if there are any transitions already created for this snapshot
+                    if (numberTransition>positionTransition){
+
+                        //Check if this snapshot is in these transitions
+                        for (uint16_t k=positionTransition;k<numberTransition;k++){
+
+                            if(transitions.transitions_pool[k].snapshotID == positionSnapshot){
+                                printf("already in the transition\n");
+                                //Add a new gesture in the gesture allowed with this transition
+                                transitions.transitions_pool[k].gestureID = transitions.transitions_pool[k].gestureID | dataGestures.movement[l].id;
+                                printf("new gesture %d \n",transitions.transitions_pool[k].gestureID);
+                                add=1;
+                            }
+                        }
+                    }
+                    //If it's a new transition
+                    if(add==0){
+                        printf("create transition\n");
+                        transitions.transitions_pool[numberTransition].snapshotID=positionSnapshot;
+                        transitions.transitions_pool[numberTransition].gestureID=dataGestures.movement[l].id;
+                        numberTransition++;
+                    }
+                }
+            }
+        }
+    }
+    transitions.transitions_rows[all_snapshots.nbrsnapshots]=numberTransition;
+    displayAllTransition(all_snapshots,transitions);
+
+    return transitions;
+}
+
