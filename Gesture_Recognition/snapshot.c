@@ -116,7 +116,7 @@ snapshot_t snapshotCreation_t (allreceivers_info_t receivers){
             //Add its id in the snapshot
             snapshotReceivers_t.receivers[snapshotReceivers_t.nreceivers]=receivers.receivers[i].id;
             snapshotReceivers_t.time[snapshotReceivers_t.nreceivers]=receivers.receivers[i].time;
-            printf("id = %d\n",receivers.receivers[i].id);
+            //printf("id = %d\n",receivers.receivers[i].id);
             //the number of receivers in the snapshot increases by 1
             snapshotReceivers_t.nreceivers++;
         }

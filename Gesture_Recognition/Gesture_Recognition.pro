@@ -8,6 +8,7 @@ SOURCES += \
         gesture.c \
         main.c \
         readFile.c \
+        simulationReceiver.c \
         snapshot.c \
         snapshotAnalysis.c
 
@@ -16,6 +17,7 @@ HEADERS += \
     gesture.h \
     gesture.h \
     readFile.h \
+    simulationReceiver.h \
     snapshot.h \
     snapshotAnalysis.h \
     structure.h

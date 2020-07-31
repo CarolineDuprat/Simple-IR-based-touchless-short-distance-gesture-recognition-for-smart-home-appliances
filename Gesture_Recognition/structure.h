@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 #define MAX_RECEIVERS 10
 
@@ -14,10 +15,13 @@
 #define MAX_MOVEMENT 500
 #define MAX_TRANSITION 1000
 #define MAX_TIME_MS 1000
+#define OBJECT_LENGTH 3
+#define DISTANCE 15
 
 typedef unsigned char uint8_t;
 typedef unsigned int uint16_t;
 typedef signed int int16_t;
+typedef signed long int64_t;
 typedef unsigned long uint64_t;
 
 
@@ -67,16 +71,15 @@ typedef struct {
 } infoFile;
 
 typedef struct {
-    int16_t x;
-    int16_t y;
+    double x;
+    double y;
     uint16_t id;
 } position;
 
 typedef struct {
-    int16_t m;
-    int16_t p;
-    int16_t a;
-} coefLine;
+    double A;
+    double B;
+} coef;
 
 typedef struct {
     uint16_t position;
@@ -118,5 +121,32 @@ typedef struct {
     uint16_t numberMovements;
     dataGesture movement[MAX_MOVEMENT];
 } dataGestures;
+
+typedef struct {
+    double hor;
+    double vert;
+} speed_t;
+
+
+typedef struct {
+    position c [4];
+} corner;
+
+typedef struct {
+    position pos;
+    speed_t speed;
+} returnSpeedPos;
+
+typedef struct {
+    double length;
+    double width;
+} dimension;
+
+typedef struct {
+    uint8_t ID;
+    uint16_t time;
+    uint8_t valid;
+} rec;
+
 
 #endif // STRUCTURE_H

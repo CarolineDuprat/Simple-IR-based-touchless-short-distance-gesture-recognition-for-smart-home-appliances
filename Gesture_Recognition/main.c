@@ -5,6 +5,7 @@
 #include "snapshot.h"
 #include "snapshotAnalysis.h"
 #include "generateSnapshot.h"
+#include "simulationReceiver.h"
 
 /**
  * @file The objective of this program is to determine the movement performed by the object from a data file of the receivers.
@@ -13,7 +14,8 @@
 
 // arguments : name.exe NumberOfReceiver x1[cm] y1[cm] x2[cm] y2[cm].... xN[cm] yN[cm] NumberOfGesture name1 angleNominal1[°] angleDeviation1[°] name2 angleNominal2[°] angleDeviation2[°] name3 angleNominal3[°] angleDeviation3[°]...
 // 4 1 1 1 -1 -1 -1 -1 1 8 "TB" 90 10 "BT" 270 10 "RL" 0 10 "LR" 180 10 "TRBL" 45 10 "TLBR" 135 10 "BRTL" 315 10 "BLTR" 225 10
-// 4 1 1 1 -1 -1 -1 -1 1 5 "RL" 0 10 "TB" 90 10 "LR" 180 10 "BT" 270 10
+// 4 1 1 1 -1 -1 -1 -1 1 4 "RL" 0 10 "TB" 90 10 "LR" 180 10 "BT" 270 10
+//4 1 1 2 -1 -1 2 -1 1 4 "RL" 0 10 "TB" 90 10 "LR" 180 10 "BT" 270 10
 int main(int argc, char *argv[])
 {
     snapshots all_snapshots;
@@ -24,7 +26,7 @@ int main(int argc, char *argv[])
 
     //Link of the file to study
     //Put the file Data in build gesture recognition
-    char *lien="Data\\4_1_1_1_-1_-1_-1_-1_1_0_10_5_4_4_.txt";
+    char *lien="Data\\4_1_1_2_-1_-1_2_-1_1_90_10_5_4_4_.txt";
 
 
     // Initialization and verification of parameters
@@ -36,9 +38,9 @@ int main(int argc, char *argv[])
         //For each receiver
         for (uint16_t i=0;i<system.numberReceivers;i++){
             system.pos[i].x=atoi(argv[j]);
-            printf("x = %d\n",system.pos[i].x);
+            printf("x = %f\n",system.pos[i].x);
             system.pos[i].y=atoi(argv[j+1]);
-            printf("y = %d\n",system.pos[i].y);
+            printf("y = %f\n",system.pos[i].y);
             // Add the ID of each receiver in binaire
             system.pos[i].id=1<<i;
             printf("id = %d\n",system.pos[i].id);
@@ -69,11 +71,9 @@ int main(int argc, char *argv[])
         }
     }
     if (error ==0){
-        //Create data with all movements allow
-        //To do..
+        //Create data with all movements allowed
         dataGestures=createDataBase (system);
-        displayDataGesture(dataGestures);
-        //dataGestures=init ();
+        //displayDataGesture(dataGestures);
         //Create all_snapshots
         all_snapshots=extractSnapshot (dataGestures);
         //Create transitions_rows and transitions_pool
