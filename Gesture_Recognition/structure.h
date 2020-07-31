@@ -24,7 +24,6 @@ typedef signed int int16_t;
 typedef signed long int64_t;
 typedef unsigned long uint64_t;
 
-
 /* Receivers */
 typedef struct {
     uint16_t id;
@@ -108,6 +107,8 @@ typedef struct {
     position pos[MAX_RECEIVERS];
     uint16_t numberGesture;
     gestureD gesture[MAX_GESTURE];
+    uint16_t speedMin;
+    uint16_t speedMax;
 } infoSystem;
 
 typedef struct {

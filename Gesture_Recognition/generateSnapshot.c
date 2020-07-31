@@ -157,11 +157,13 @@ dataGestures createDataBase (infoSystem system){
             }
             //printf("angle  = %d\n",angle);
             //Create all snapshots to make the movement with the direction = angle
-            //Add gesture for more speed ....
-            gesture = SnapshotsAngle (system,angle,5,system.gesture[i].id);
-            //printf("gesture.nbrsnapshots  = %d\n",gesture.nbrsnapshots);
-            dataGestures.movement[dataGestures.numberMovements]=gesture;
-            dataGestures.numberMovements++;
+            //For k = minSpeed to maxSpeed
+            for (uint16_t k=system.speedMin;k<system.speedMax+1;k=k+2){
+                gesture = SnapshotsAngle (system,angle,k,system.gesture[i].id);
+                //printf("gesture.nbrsnapshots  = %d\n",gesture.nbrsnapshots);
+                dataGestures.movement[dataGestures.numberMovements]=gesture;
+                dataGestures.numberMovements++;
+            }
         }
     }
     //printf("dataGestures.numberMovements  = %d\n",dataGestures.numberMovements);

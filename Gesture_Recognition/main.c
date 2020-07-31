@@ -12,10 +12,10 @@
  * This program can be broken down into three parts: translate the info from the file, creation of the snapshot list and snapshot list analysis to determine movement
  */
 
-// arguments : name.exe NumberOfReceiver x1[cm] y1[cm] x2[cm] y2[cm].... xN[cm] yN[cm] NumberOfGesture name1 angleNominal1[°] angleDeviation1[°] name2 angleNominal2[°] angleDeviation2[°] name3 angleNominal3[°] angleDeviation3[°]...
+// arguments : name.exe NumberOfReceiver x1[cm] y1[cm] x2[cm] y2[cm].... xN[cm] yN[cm] minSpeed maxSpeed NumberOfGesture name1 angleNominal1[°] angleDeviation1[°] name2 angleNominal2[°] angleDeviation2[°] name3 angleNominal3[°] angleDeviation3[°]...
 // 4 1 1 1 -1 -1 -1 -1 1 8 "TB" 90 10 "BT" 270 10 "RL" 0 10 "LR" 180 10 "TRBL" 45 10 "TLBR" 135 10 "BRTL" 315 10 "BLTR" 225 10
 // 4 1 1 1 -1 -1 -1 -1 1 4 "RL" 0 10 "TB" 90 10 "LR" 180 10 "BT" 270 10
-//4 1 1 2 -1 -1 2 -1 1 4 "RL" 0 10 "TB" 90 10 "LR" 180 10 "BT" 270 10
+// 4 1 1 2 -1 -1 2 -1 1 2 10 4 "RL" 0 10 "TB" 90 10 "LR" 180 10 "BT" 270 10
 int main(int argc, char *argv[])
 {
     snapshots all_snapshots;
@@ -46,7 +46,10 @@ int main(int argc, char *argv[])
             printf("id = %d\n",system.pos[i].id);
             j=j+2;
         }
-
+        system.speedMin=atoi(argv[j]);
+        j++;
+        system.speedMax=atoi(argv[j]);
+        j++;
         system.numberGesture= atoi(argv[j]);
         printf("NumberGesture= %d\n",system.numberGesture);
         j++;
